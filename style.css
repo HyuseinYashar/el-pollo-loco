@@ -4,8 +4,3 @@ body{
     justify-content: center;
     flex-direction: column;
 }
-canvas{
-    height: 480px;
-    width: 720px;
-    border: 1px solid;
-}

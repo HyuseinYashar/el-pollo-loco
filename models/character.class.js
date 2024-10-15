@@ -1,7 +1,10 @@
 class Character extends MovableObjects{
-    
+    y = 250;
+    height = 200;
+    width = 120;
     constructor(){
-        super().loadImg('img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
+        super().loadImg('img/2_character_pepe/1_idle/idle/I-1.png');
+        
     }
 
     jump(){
