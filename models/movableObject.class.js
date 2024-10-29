@@ -8,7 +8,11 @@ class MovableObjects {
      currentImg = 0;
      speed = 0.15;
      otherDirection = false;
+     speedY = 0;
+     acceleration = 1;
 
+     walking_sound = new Audio('audio/walking.mp3');
+     jumping_sound = new Audio('audio/jumping.mp3');
 
      loadImg(path) {
           this.img = new Image();
@@ -23,18 +27,43 @@ class MovableObjects {
           });
      }
 
-     moveRight() { }
+     moveRight() {
+          this.x += this.speed;
+          this.otherDirection = false;
+          this.walking_sound.play();
+     }
 
      moveLeft() {
-          setInterval(() => {
-               this.x -= this.speed;
-          }, 1000 / 60);
+          this.x -= this.speed;
      }
 
      playAnimation(images) {
           let i = this.currentImg % images.length;
-          let path =images[i];
+          let path = images[i];
           this.img = this.imageCache[path];
           this.currentImg++;
+     }
+
+     applyGravity() {
+          setInterval(() => {
+               if (this.isAboveGround() || this.speedY > 0) {
+                    this.y -= this.speedY;
+                    this.speedY -= this.acceleration;
+               }
+          }, 1000 / 25);
+     }
+
+     isAboveGround() {
+          return this.y < 230;
+     }
+
+     jump() {
+          this.jumping_sound.play();
+          this.speedY = 15;
+     }
+
+     pauseSounds() {
+          this.walking_sound.pause();
+          this.jumping_sound.pause();
      }
 }
