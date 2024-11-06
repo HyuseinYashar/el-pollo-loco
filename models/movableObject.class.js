@@ -1,31 +1,16 @@
-class MovableObjects {
-     x = 10;
-     y = 50;
-     img;
-     height = 70;
-     width = 45;
-     imageCache = {};
-     currentImg = 0;
+class MovableObjects  extends DrawableObject{
+
      speed = 0.15;
      otherDirection = false;
      speedY = 0;
      acceleration = 1;
+     energy = 100;
+     lasthit = 0;
 
      walking_sound = new Audio('audio/walking.mp3');
      jumping_sound = new Audio('audio/jumping.mp3');
 
-     loadImg(path) {
-          this.img = new Image();
-          this.img.src = path;
-     }
-
-     loadImages(images) {
-          images.forEach((path) => {
-               let img = new Image();
-               img.src = path;
-               this.imageCache[path] = img;
-          });
-     }
+     
 
      moveRight() {
           this.x += this.speed;
@@ -37,13 +22,7 @@ class MovableObjects {
           this.x -= this.speed;
      }
 
-     playAnimation(images) {
-          let i = this.currentImg % images.length;
-          let path = images[i];
-          this.img = this.imageCache[path];
-          this.currentImg++;
-     }
-
+     
      applyGravity() {
           setInterval(() => {
                if (this.isAboveGround() || this.speedY > 0) {
@@ -66,16 +45,33 @@ class MovableObjects {
           this.walking_sound.pause();
           this.jumping_sound.pause();
      }
-     draw(ctx) {
-          ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+
+
+  
+
+     isColliding(obj) {
+          return this.x + this.width > obj.x &&
+               this.y + this.height > obj.y &&
+               this.x < obj.x &&
+               this.y < obj.y + obj.height;
      }
 
-     drawFrame(ctx) {
-          ctx.beginPath();
-          ctx.lineWidth = '1';
-          ctx.strokeStyle = 'blue';
-          ctx.rect(this.x, this.y, this.width, this.height);
-          ctx.stroke();
+     hit() {
+          this.energy -= 10;
+          if (this.energy < 0) {
+               this.energy = 0;
+          } else {
+               this.lasthit = new Date().getTime();
+          }
+     }
+     
+     isDead(){
+          return this.energy == 0;
+     }
 
+     isHurt(){
+          let timepassed = new Date().getTime()-this.lasthit;
+          timepassed = timepassed/1000;
+          return timepassed <0.3;
      }
 }
