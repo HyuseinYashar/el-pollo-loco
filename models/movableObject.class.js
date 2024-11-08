@@ -1,4 +1,4 @@
-class MovableObjects  extends DrawableObject{
+class MovableObjects extends DrawableObject {
 
      speed = 0.15;
      otherDirection = false;
@@ -10,7 +10,7 @@ class MovableObjects  extends DrawableObject{
      walking_sound = new Audio('audio/walking.mp3');
      jumping_sound = new Audio('audio/jumping.mp3');
 
-     
+
 
      moveRight() {
           this.x += this.speed;
@@ -22,7 +22,7 @@ class MovableObjects  extends DrawableObject{
           this.x -= this.speed;
      }
 
-     
+
      applyGravity() {
           setInterval(() => {
                if (this.isAboveGround() || this.speedY > 0) {
@@ -33,7 +33,11 @@ class MovableObjects  extends DrawableObject{
      }
 
      isAboveGround() {
-          return this.y < 230;
+          if (this instanceof ThrowableObject) {
+               return true;
+          } else {
+               return this.y < 230;
+          }
      }
 
      jump() {
@@ -47,7 +51,7 @@ class MovableObjects  extends DrawableObject{
      }
 
 
-  
+
 
      isColliding(obj) {
           return this.x + this.width > obj.x &&
@@ -64,14 +68,14 @@ class MovableObjects  extends DrawableObject{
                this.lasthit = new Date().getTime();
           }
      }
-     
-     isDead(){
+
+     isDead() {
           return this.energy == 0;
      }
 
-     isHurt(){
-          let timepassed = new Date().getTime()-this.lasthit;
-          timepassed = timepassed/1000;
-          return timepassed <0.3;
+     isHurt() {
+          let timepassed = new Date().getTime() - this.lasthit;
+          timepassed = timepassed / 1000;
+          return timepassed < 0.3;
      }
 }
