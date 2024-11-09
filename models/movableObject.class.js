@@ -1,6 +1,6 @@
 class MovableObjects extends DrawableObject {
-
-     speed = 0.15;
+     gelcem
+     speed = 10;
      otherDirection = false;
      speedY = 0;
      acceleration = 1;
@@ -14,8 +14,10 @@ class MovableObjects extends DrawableObject {
 
      moveRight() {
           this.x += this.speed;
-          this.otherDirection = false;
-          this.walking_sound.play();
+          if (this instanceof Character) {
+               this.otherDirection = false;
+               this.walking_sound.play();
+          }
      }
 
      moveLeft() {

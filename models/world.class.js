@@ -1,7 +1,9 @@
 class World {
 
     character = new Character();
-    statusbar = new Statusbar();
+    statusbarHealth = new StatusbarHealth();
+    statusbarBottle = new StatusbarBottle();
+    statusbarCoin = new StatusbarCoin();
     throwableObjects = [];
 
     level = level1;
@@ -38,7 +40,7 @@ class World {
         this.level.enemies.forEach(enemy => {
             if (this.character.isColliding(enemy)) {
                 this.character.hit();
-                this.statusbar.setPercentage(this.character.energy)
+                this.statusbar.setPercentage(this.character.energy);
             }
         })
     }
@@ -59,7 +61,9 @@ class World {
         this.addObjectsToMap(this.throwableObjects);
 
         this.ctx.translate(-this.camera_x, 0);
-        this.addToMap(this.statusbar);
+        this.addToMap(this.statusbarHealth);
+        this.addToMap(this.statusbarBottle);
+        this.addToMap(this.statusbarCoin);
         this.ctx.translate(this.camera_x, 0);
 
 
@@ -84,7 +88,7 @@ class World {
             this.flipImg(mo);
         }
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        // mo.drawFrame(this.ctx);
 
         if (mo.otherDirection) {
             this.flipImgBack(mo);
