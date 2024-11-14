@@ -1,6 +1,7 @@
 class SmallChicken extends MovableObjects {
     x = 200 + Math.random() * 500;
     y = 375;
+    dead = false;
 
 
     IMAGES_WALKING = [
@@ -16,21 +17,38 @@ class SmallChicken extends MovableObjects {
         this.loadImages(this.IMAGES_WALKING);
         this.loadImg(this.IMAGE_DEAD);
         this.height = 50;
-        this.animate();
         this.speed = 0.15 + Math.random() * 0.21;
+        this.animate();
+        this.move();
     }
 
-    animate() {
+    move() {
+  
         setInterval(() => {
-           this.moveLeft();
-            // if(this.x < 1) {
-            //     this.moveRight();
-            //     this.otherDirection = true;
-            // }
+            if(this.x < 10 && !this.dead) {
+                this.moveRight();
+                this.otherDirection = true;
+            } else if(this.x > 1400 && !this.dead){
+                this.moveLeft();
+            } else{
+                this.moveLeft();
+            }
         }, 1000 / 60);
+    }
 
+    animate(){
         setInterval(() => {
             this.playAnimation(this.IMAGES_WALKING);
         }, 120);
     }
+
+    moveRight() {   
+        setInterval(() => {
+            this.x += this.speed;        
+        }, 1000/60);     
+   }
+
+   moveLeft() {
+        this.x -= this.speed;
+   }
 }

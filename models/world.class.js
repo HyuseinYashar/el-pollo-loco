@@ -26,8 +26,17 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkAttack();
         }, 200);
     }
+    checkAttack(){
+
+        this.level.enemies.forEach(enemy => {
+            if (this.character.isColliding(enemy)) {
+                console.log('check attack');
+
+            }
+        })    }
 
     checkThrowObjects(){
         if(this.keyboard.D){

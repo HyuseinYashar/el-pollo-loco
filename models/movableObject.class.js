@@ -1,14 +1,15 @@
 class MovableObjects extends DrawableObject {
-     gelcem
-     speed = 10;
+     speed ;
      otherDirection = false;
      speedY = 0;
      acceleration = 1;
-     energy = 100;
+     energy = 32422342323;
      lasthit = 0;
 
      walking_sound = new Audio('audio/walking.mp3');
      jumping_sound = new Audio('audio/jumping.mp3');
+     bottle_drop = new Audio('audio/bottle_drop.mp3');
+
 
 
 
@@ -31,7 +32,7 @@ class MovableObjects extends DrawableObject {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
                }
-          }, 1000 / 25);
+          }, 1000 / 30);
      }
 
      isAboveGround() {
@@ -50,6 +51,7 @@ class MovableObjects extends DrawableObject {
      pauseSounds() {
           this.walking_sound.pause();
           this.jumping_sound.pause();
+          this.bottle_drop.pause();
      }
 
 
@@ -77,7 +79,16 @@ class MovableObjects extends DrawableObject {
 
      isHurt() {
           let timepassed = new Date().getTime() - this.lasthit;
-          timepassed = timepassed / 1000;          
+          timepassed = timepassed / 1000;
           return timepassed < 0.3;
+     }
+
+     trow() {
+          this.bottle_drop.play();
+          this.speedY = 8;
+          this.applyGravity();
+          setInterval(() => {
+               this.x += 10;
+          }, 30);
      }
 }

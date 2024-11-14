@@ -94,7 +94,6 @@ class Character extends MovableObjects {
         setInterval(() => {
             let timepassed = new Date().getTime() - this.lastMove;
             timepassed = timepassed / 1000;
-            console.log(timepassed );
 
             if ((timepassed) > 7.0 && !this.isDead() ) {
                 this.playAnimation(this.IMAGES_LONG_IDLE);
@@ -105,6 +104,7 @@ class Character extends MovableObjects {
     }
     animate() {
         setInterval(() => {
+            
             this.pauseSounds();
 
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -145,12 +145,6 @@ class Character extends MovableObjects {
 
     }
     pauseMoving(){
-        setTime(() => {
-            this.world.keyboard.RIGHT = false;
-            this.world.keyboard.LEFT = false;
-            this.world.keyboard.D = false;
-            this.world.keyboard.UP = false;
-        }, 5000);
     }
 
 }
