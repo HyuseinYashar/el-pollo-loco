@@ -10,6 +10,16 @@ class MovableObjects extends DrawableObject {
      jumping_sound = new Audio('audio/jumping.mp3');
      bottle_drop = new Audio('audio/bottle_drop.mp3');
 
+     intervalIds  = [];
+
+     setStoppableInt(fn,time) {
+           let id  = setInterval(fn,time);
+          this.intervalIds.push(id);
+     }
+
+     stopInts(){
+          this.intervalIds.forEach(clearInterval);
+     }
 
 
 
@@ -28,18 +38,18 @@ class MovableObjects extends DrawableObject {
 
      applyGravity() {
           setInterval(() => {
-               if (this.isAboveGround() || this.speedY > 0) {
+               if (this.isAboveGround(this.y) || this.speedY > 0) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
                }
           }, 1000 / 30);
      }
 
-     isAboveGround() {
+     isAboveGround(y) {
           if (this instanceof ThrowableObject) {
                return true;
           } else {
-               return this.y < 230;
+               return this.y < y;
           }
      }
 

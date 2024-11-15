@@ -118,7 +118,7 @@ class Character extends MovableObjects {
 
             }
 
-            if (this.world.keyboard.UP && !this.isAboveGround()) {
+            if (this.world.keyboard.UP && !this.isAboveGround(this.y)) {
                 this.jump();
                 this.lastMove = new Date().getTime();
 
@@ -132,7 +132,7 @@ class Character extends MovableObjects {
                 this.playAnimation(this.IMAGES_HURT);
             } else if (this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
-            } else if (this.isAboveGround()) {
+            } else if (this.isAboveGround(this.y)) {
                 this.playAnimation(this.IMAGES_JUMPING);
             } else {
                 // this.playAnimation(this.IMAGES_IDLE);

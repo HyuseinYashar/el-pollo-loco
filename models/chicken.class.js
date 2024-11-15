@@ -3,6 +3,8 @@ class Chicken extends MovableObjects {
     y = 350;
     height = 80
     width = 50;
+    leftId;
+    rightId;
 
     dead = false;
     IMAGES_WALKING = [
@@ -23,17 +25,23 @@ class Chicken extends MovableObjects {
     }
 
     move() {
-
-        setInterval(() => {
-            if (this.x < 200) {
-                this.moveRight();
+        setInterval(() =>{
+            if(this.x < 200 ){
+                // this.moveRight();
                 this.otherDirection = true;
-            } else if (this.x > 201) {
+            } 
+            if(!this.otherDirection){
                 this.moveLeft();
             } else {
-                this.moveLeft();
+                this.moveRight();
+                this.otherDirection = true;
             }
-        }, 1000 / 60);
+            if(this.x > 1400){
+                this.otherDirection = false;
+            }
+
+        },1000 / 60)    
+   
     }
 
     animate() {
@@ -51,9 +59,7 @@ class Chicken extends MovableObjects {
     }
 
     moveRight() {
-        setInterval(() => {
-            this.x += this.speed;
-        }, 1000 / 60);
+        this.x += this.speed;    
     }
 
     moveLeft() {

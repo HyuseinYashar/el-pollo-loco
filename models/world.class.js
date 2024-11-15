@@ -5,6 +5,7 @@ class World {
     statusbarBottle = new StatusbarBottle();
     statusbarCoin = new StatusbarCoin();
     throwableObjects = [];
+    bottle = new Bottle();
 
     level = level1;
 
@@ -69,6 +70,7 @@ class World {
         this.addObjectsToMap(this.level.clouds);
         this.addToMap(this.character);
         this.addObjectsToMap(this.throwableObjects);
+        this.addToMap(this.bottle);
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusbarHealth);
