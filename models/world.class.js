@@ -168,4 +168,19 @@ class World {
         return this.character.isColliding(enemy) && this.character.isAboveGround();
     }
 
+    splash(enemy) {
+        if (this.collidedWith[enemy.id]) return; // Keine Mehrfachkollision
+        this.collidedWith[enemy.id] = true;
+        this.speedY = 0;
+        this.speedX = 0;
+        this.acceleration = 0;
+        clearInterval(this.throwInterval);
+        
+        this.playOnce(this.IMAGES_BOTTLE_SPLASH);
+    
+        setTimeout(() => {
+          this.isSplicable = true;
+        }, this.IMAGES_BOTTLE_SPLASH.length * 100);
+      }
+
 }
