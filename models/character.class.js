@@ -5,7 +5,15 @@ class Character extends MovableObjects {
     world;
     speed = 10;
     lastMove = new Date().getTime();
+    amountOfCoins = 0;
+    amountOfBottles = 0;
 
+    offset = {
+        top: 0,
+        bottom: 0,
+        left: 10,
+        right: 10,
+      };
 
 
 
@@ -79,15 +87,15 @@ class Character extends MovableObjects {
         this.loadImages(this.IMAGES_DEAD);
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
+        this.applyGravity();
         this.idle();
         this.animate();
-        this.applyGravity();
     }
 
     moveLeft() {
         this.x -= this.speed;
         this.otherDirection = true;
-        this.walking_sound.play();
+        // this.walking_sound.play();
     }
 
     idle() {
@@ -95,7 +103,7 @@ class Character extends MovableObjects {
             let timepassed = new Date().getTime() - this.lastMove;
             timepassed = timepassed / 1000;
 
-            if ((timepassed) > 7.0 && !this.isDead() ) {
+            if ((timepassed) > 7.0 && !this.isDead()) {
                 this.playAnimation(this.IMAGES_LONG_IDLE);
             } else {
                 this.playAnimation(this.IMAGES_IDLE);
@@ -104,7 +112,7 @@ class Character extends MovableObjects {
     }
     animate() {
         setInterval(() => {
-            
+
             this.pauseSounds();
 
             if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
@@ -144,7 +152,21 @@ class Character extends MovableObjects {
         }, 60);
 
     }
-    pauseMoving(){
+    pauseMoving() {
+        
     }
 
+    collectCoin() {
+        this.amountOfCoins += 10;
+        if (this.amountOfCoins > 100) {
+          this.amountOfCoins = 100;
+        }
+      }
+
+      collectBottle() {
+        this.amountOfBottles += 10;
+        if (this.amountOfBottles > 100) {
+          this.amountOfBottles = 100;
+        }
+      }
 }

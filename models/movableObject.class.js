@@ -1,23 +1,23 @@
 class MovableObjects extends DrawableObject {
-     speed ;
+     speed;
      otherDirection = false;
      speedY = 0;
      acceleration = 1;
-     energy = 32422342323;
+     energy = 1000;
      lasthit = 0;
 
      walking_sound = new Audio('audio/walking.mp3');
      jumping_sound = new Audio('audio/jumping.mp3');
      bottle_drop = new Audio('audio/bottle_drop.mp3');
 
-     intervalIds  = [];
+     intervalIds = [];
 
-     setStoppableInt(fn,time) {
-           let id  = setInterval(fn,time);
+     setStoppableInt(fn, time) {
+          let id = setInterval(fn, time);
           this.intervalIds.push(id);
      }
 
-     stopInts(){
+     stopInts() {
           this.intervalIds.forEach(clearInterval);
      }
 
@@ -27,7 +27,7 @@ class MovableObjects extends DrawableObject {
           this.x += this.speed;
           if (this instanceof Character) {
                this.otherDirection = false;
-               this.walking_sound.play();
+               // this.walking_sound.play();
           }
      }
 
@@ -38,23 +38,23 @@ class MovableObjects extends DrawableObject {
 
      applyGravity() {
           setInterval(() => {
-               if (this.isAboveGround(this.y) || this.speedY > 0) {
+               if (this.isAboveGround() || this.speedY > 0) {
                     this.y -= this.speedY;
                     this.speedY -= this.acceleration;
                }
-          }, 1000 / 30);
+          }, 1000 / 25);
      }
 
      isAboveGround(y) {
           if (this instanceof ThrowableObject) {
                return true;
           } else {
-               return this.y < y;
+               return this.y < 230;
           }
      }
 
      jump() {
-          this.jumping_sound.play();
+          // this.jumping_sound.play();
           this.speedY = 15;
      }
 
@@ -74,8 +74,17 @@ class MovableObjects extends DrawableObject {
                this.y < obj.y + obj.height;
      }
 
+     // isColliding(mo) {
+     //      return (
+     //           this.x + this.width - this.offset.right > mo.x + mo.offset.left && // Rechte Kante der Flasche nach rechts
+     //           this.x + this.offset.left < mo.x + mo.width - mo.offset.right && // Linke Kante der Flasche nach links
+     //           this.y + this.height - this.offset.bottom > mo.y + mo.offset.top && // Untere Kante der Flasche nach unten
+     //           this.y + this.offset.top < mo.y + mo.height - mo.offset.bottom // Obere Kante der Flasche nach oben
+     //      );
+     // }
+
      hit() {
-          this.energy -= 10;
+          this.energy -= 1;
           if (this.energy < 0) {
                this.energy = 0;
           } else {
@@ -94,11 +103,13 @@ class MovableObjects extends DrawableObject {
      }
 
      trow() {
-          this.bottle_drop.play();
+          // this.bottle_drop.play();
           this.speedY = 8;
           this.applyGravity();
           setInterval(() => {
                this.x += 10;
           }, 30);
      }
+
+
 }
