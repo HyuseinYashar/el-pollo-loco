@@ -1,9 +1,9 @@
 class Character extends MovableObjects {
-    y = 230;
+    y = 100;
     height = 200;
     width = 120;
     world;
-    speed = 10;
+    speed = 5;
     lastMove = new Date().getTime();
     amountOfCoins = 0;
     amountOfBottles = 0;
@@ -11,9 +11,9 @@ class Character extends MovableObjects {
     offset = {
         top: 0,
         bottom: 0,
-        left: 10,
-        right: 10,
-      };
+        left: 0,
+        right: 0,
+    };
 
 
 
@@ -88,7 +88,7 @@ class Character extends MovableObjects {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_LONG_IDLE);
         this.applyGravity();
-        this.idle();
+        this.move();
         this.animate();
     }
 
@@ -98,17 +98,23 @@ class Character extends MovableObjects {
         // this.walking_sound.play();
     }
 
-    idle() {
+    move() {
         setInterval(() => {
             let timepassed = new Date().getTime() - this.lastMove;
             timepassed = timepassed / 1000;
-
-            if ((timepassed) > 7.0 && !this.isDead()) {
-                this.playAnimation(this.IMAGES_LONG_IDLE);
+            if ((timepassed) > 8.0 && !this.isDead()) {
+                this.longIdle();
             } else {
-                this.playAnimation(this.IMAGES_IDLE);
+                this.idle();
             }
-        }, 100)
+        }, 150)
+    }
+    idle() {
+        this.playAnimation(this.IMAGES_IDLE);
+    }
+
+    longIdle() {
+        this.playAnimation(this.IMAGES_LONG_IDLE);
     }
     animate() {
         setInterval(() => {
@@ -131,42 +137,61 @@ class Character extends MovableObjects {
                 this.lastMove = new Date().getTime();
 
             }
-
             this.world.camera_x = -this.x + 30;
         }, 1000 / 30);
 
         setInterval(() => {
             if (this.isHurt(this)) {
-                this.playAnimation(this.IMAGES_HURT);
+                this.hurting();
             } else if (this.isDead()) {
-                this.playAnimation(this.IMAGES_DEAD);
+                this.dead();
             } else if (this.isAboveGround(this.y)) {
-                this.playAnimation(this.IMAGES_JUMPING);
+                this.jumping();
             } else {
                 // this.playAnimation(this.IMAGES_IDLE);
                 if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-                    this.playAnimation(this.IMAGES_WALKING);
+                    this.walking();
                     this.lastMove = new Date().getTime();
                 }
             }
-        }, 60);
+        }, 150);
 
     }
+
+    hurting() {
+        let intervalId = setInterval(this.pauseMoving(), 10);
+        clearInterval(intervalId);
+        this.playAnimation(this.IMAGES_HURT);
+        this.speed = 5;
+    }
+
+    dead() {
+        this.playAnimation(this.IMAGES_DEAD);
+    }
+
+    jumping() {
+        this.playAnimation(this.IMAGES_JUMPING);
+    }
+
+    walking() {
+        this.playAnimation(this.IMAGES_WALKING);
+    }
+
     pauseMoving() {
-        
+        this.speed = 0;
     }
 
     collectCoin() {
         this.amountOfCoins += 10;
         if (this.amountOfCoins > 100) {
-          this.amountOfCoins = 100;
+            this.amountOfCoins = 100;
         }
-      }
+    }
 
-      collectBottle() {
+    collectBottle() {
         this.amountOfBottles += 10;
         if (this.amountOfBottles > 100) {
-          this.amountOfBottles = 100;
+            this.amountOfBottles = 100;
         }
-      }
+    }
 }

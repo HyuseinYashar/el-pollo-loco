@@ -20,11 +20,11 @@ class Bottle extends MovableObjects {
     constructor(x,y){
         super();
         this.x = x;
-        this.y = y;
+        this.y = 0
         this.loadImages(this.IMAGE_SPLASH)
         this.loadImg(this.BOTTLE_IMAGE);
 
-        // this.applyGravity(this.y);
+        this.applyGravity();
         // this.animate();
     }
 

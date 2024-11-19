@@ -18,6 +18,14 @@ class Endboss extends MovableObjects{
     width = 300;
     x= 1700;
     y=-30;
+
+
+    offset = {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+    };
     constructor(){
         super().loadImg(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
