@@ -21,8 +21,8 @@ class ThrowableObject extends MovableObjects {
         this.loadImages(this.IMAGES_ROTATING);
         this.x = x;
         this.y = y;
-        this.height = 60;
-        this.width = 30;
+        this.height = 80;
+        this.width = 100;
         this.animate();
         this.trow();
     }
