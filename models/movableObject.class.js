@@ -5,6 +5,7 @@ class MovableObjects extends DrawableObject {
      acceleration = 1;
      energy = 1000;
      lasthit = 0;
+     throwAnimation;
 
      walking_sound = new Audio('audio/walking.mp3');
      jumping_sound = new Audio('audio/jumping.mp3');
@@ -95,7 +96,8 @@ class MovableObjects extends DrawableObject {
           // this.bottle_drop.play();
           this.speedY = 8;
           this.applyGravity();
-          setInterval(() => {
+
+          this.throwAnimation = setInterval(() => {
                this.x += 10;
           }, 30);
      }

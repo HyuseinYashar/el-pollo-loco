@@ -6,6 +6,8 @@ class Chicken extends MovableObjects {
     leftId;
     rightId;
     alive;
+
+    energy = 20;
     IMAGES_WALKING = [
         'img/3_enemies_chicken/chicken_normal/1_walk/1_w.png',
         'img/3_enemies_chicken/chicken_normal/1_walk/2_w.png',
@@ -63,6 +65,7 @@ class Chicken extends MovableObjects {
     die() {
         this.alive = false;
         this.speed = 0;
+        this.energy = 0;
     }
 
     isDead(){

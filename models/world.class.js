@@ -3,6 +3,7 @@ class World {
   statusbarHealth = new StatusbarHealth();
   statusbarBottle = new StatusbarBottle();
   statusbarCoin = new StatusbarCoin();
+  endbossBar = new EndbossBar();
   throwableObjects = [];
   bottle = new ThrowableObject();
 
@@ -37,8 +38,6 @@ class World {
         this.character.x + 100,
         this.character.y + 100
       );
-      this.addToMap(this.bottle);
-      this.splash(this.bottle);
       this.character.amountOfBottles -= 10;
       if (this.character.amountOfBottles < 0) {
         this.character.amountOfBottles = 0;
@@ -67,6 +66,7 @@ class World {
     this.addToMap(this.statusbarHealth);
     this.addToMap(this.statusbarBottle);
     this.addToMap(this.statusbarCoin);
+    this.addToMap(this.endbossBar);
     this.ctx.translate(this.camera_x, 0);
 
     this.addObjectsToMap(this.level.enemies);
@@ -112,9 +112,8 @@ class World {
     this.level.enemies.forEach((enemy) => {
       this.characterGotHit(enemy);
       this.checkCharacterEnemyCollisions(enemy);
-      this.splash(enemy);
-      if (this.bottle) {
-        //////// hier weitermachen
+      if (this.bottle.x) {
+        this.splash(enemy);
       }
     });
   }
@@ -165,21 +164,29 @@ class World {
     return this.character.isColliding(enemy) && this.character.isAboveGround();
   }
 
-  splash(bottle) {
-    if (bottle.isColliding()) {
+  splash(enemy) {
+    if (this.bottle.isColliding(enemy)) {
+      if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
+        enemy.die();
+      } else {
+        enemy.hit();
+      }
       console.log("die flashe hat getroffen");
-
-      this.collidedWith[enemy.id] = true;
-      this.speedY = 0;
-      this.speedX = 0;
-      this.acceleration = 0;
-      clearInterval(this.throwInterval);
-
-      this.playOnce(this.IMAGES_BOTTLE_SPLASH);
-
+      clearInterval(this.bottle.animateRotation);
+      clearInterval(this.bottle.throwAnimation);
+      this.bottle.stop();
+      // this.bottle.speedY = 0;
+      // this.bottle.speed = 0;
+      // this.bottle.acceleration = 0;
+      // let anim = setTimeout(() => {
+      //   this.bottle.playAnimation(this.bottle.IMAGE_SPLASH);
+      // }, 100);
+      // clearInterval(anim)
       setTimeout(() => {
-        this.isSplicable = true;
-      }, this.IMAGES_BOTTLE_SPLASH.length * 100);
+        this.bottle = new Bottle();
+        
+      }, 1000);
+
     }
   }
 }

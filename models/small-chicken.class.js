@@ -16,7 +16,7 @@ class SmallChicken extends MovableObjects {
         right: 0,
     }
     alive;
-
+    energy = 20;
     constructor() {
         super();
         this.loadImages(this.IMAGES_WALKING);
@@ -60,6 +60,7 @@ class SmallChicken extends MovableObjects {
     die() {
         this.alive = false;
         this.speed = 0;
+        this.energy = 0;
         // setInterval(() => {
         //     this.loadImg(this.IMAGES_DEATH);
         // }, 120);
