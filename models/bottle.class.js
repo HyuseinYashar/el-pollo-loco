@@ -26,12 +26,7 @@ class Bottle extends MovableObjects {
     this.applyGravity();
   }
 
-  stop() {
-    this.speedY = 0;
-    this.speed = 0;
-    this.acceleration = 0;
-    this.loadImages(this.IMAGE_SPLASH);
-  }
+
 
 
 }

@@ -54,6 +54,19 @@ class MovableObjects extends DrawableObject {
           this.bottle_drop.pause();
      }
 
+     playOnce(images) {
+          this.currentImage = 0;
+      
+          const animationInterval = setInterval(() => {
+            if (this.currentImage < images.length) {
+              let path = images[this.currentImage];
+              this.img = this.imageCache[path];
+              this.currentImage++;
+            } else {
+              clearInterval(animationInterval);
+            }
+          }, 400);
+        }
 
 
 

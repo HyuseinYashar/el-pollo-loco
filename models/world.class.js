@@ -168,25 +168,18 @@ class World {
     if (this.bottle.isColliding(enemy)) {
       if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
         enemy.die();
+        let indexOfEnemy = this.level.enemies.indexOf(enemy);
+        setTimeout(() => {
+          this.level.enemies.splice(indexOfEnemy, 1);
+        }, 700);
       } else {
         enemy.hit();
       }
-      console.log("die flashe hat getroffen");
+      this.bottle.stop();
+      this.bottle = new Bottle();
+      this.endbossBar.setPercentage(enemy.energy);
       clearInterval(this.bottle.animateRotation);
       clearInterval(this.bottle.throwAnimation);
-      this.bottle.stop();
-      // this.bottle.speedY = 0;
-      // this.bottle.speed = 0;
-      // this.bottle.acceleration = 0;
-      // let anim = setTimeout(() => {
-      //   this.bottle.playAnimation(this.bottle.IMAGE_SPLASH);
-      // }, 100);
-      // clearInterval(anim)
-      setTimeout(() => {
-        this.bottle = new Bottle();
-        
-      }, 1000);
-
     }
   }
 }
