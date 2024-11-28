@@ -63,52 +63,35 @@ class Endboss extends MovableObjects {
   };
   constructor() {
     super();
+    this.loadImg(this.IMAGES_WALKING[0]);
     this.loadImages(this.IMAGES_WALKING);
     this.loadImages(this.IMAGES_ALERT);
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
-    this.walkLeft();
-    this.animate();
+    this.walkLeft(); //walking left
+    this.animate(); // animating the object
   }
-  playA(status) {
-    this.playAnimation(status);
-  }
+
   walkLeft() {
-    this.speed = 1;
     if (!this.isDead()) {
       this.moveleftInt = setInterval(() => {
-          console.log("moveleftInt");
+        // console.log("moveleftInt");
         this.moveLeft();
       }, 200);
-
-      this.playAniInt = setInterval(() => {
-          console.log("playAniInt");
-        if (this.isHurt()) {
-          this.playA(this.IMAGES_ATTACK);
-        } else {
-          this.playA(this.IMAGES_WALKING);
-        }
-      }, 300);
     }
   }
 
   animate() {
     this.animateInt = setInterval(() => {
-        console.log("animateInt");
       if (this.isDead()) {
         clearInterval(this.moveleftInt);
-        clearInterval(this.playAniInt);
-        clearInterval(this.animateInt);
-        setTimeout(() => {
-          this.playdie();
-        }, 1000);
+        this.playdie();
       } else if (this.isHurt()) {
-        clearInterval(this.playAniInt);
-        clearInterval(this.moveleftInt);
-        setTimeout(() => {
-            this.playHurt();
-        }, 300);
+        this.speed = 0;
+        this.playHurt();
+      } else {
+        this.playAnimation(this.IMAGES_WALKING);
       }
     }, 200);
   }
@@ -132,23 +115,16 @@ class Endboss extends MovableObjects {
   animateInt;
 
   playHurt() {
-    clearInterval(this.moveleftInt);
-    clearInterval(this.playAniInt);
     // this.boss_sound.play();
     this.playOnce(this.IMAGES_HURT);
-    this.speed = 0;
-    setTimeout(() => {
-      this.playA(this.IMAGES_ATTACK);
-    }, 500);
+    this.speed = 1;
   }
 
   playdie() {
-    clearInterval(this.moveleftInt);
-    clearInterval(this.playAniInt);
-    clearInterval(this.animateInt);
     this.speed = 0;
     this.playOnce(this.IMAGES_DEAD);
-
+    clearInterval(this.moveleftInt);
+    clearInterval(this.animateInt);
     setTimeout(() => {
       this.y = -1000;
     }, 1500);

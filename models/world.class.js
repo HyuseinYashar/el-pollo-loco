@@ -29,7 +29,7 @@ class World {
       this.checkThrowObjects();
       this.collectingCoins();
       this.collectingBottles();
-    }, 200);
+    }, 100);
   }
 
   checkThrowObjects() {
@@ -42,6 +42,7 @@ class World {
       if (this.character.amountOfBottles < 0) {
         this.character.amountOfBottles = 0;
       }
+      
       this.statusbarBottle.setPercentage(this.character.amountOfBottles);
     }
   }
@@ -112,7 +113,11 @@ class World {
     this.level.enemies.forEach((enemy) => {
       this.characterGotHit(enemy);
       this.checkCharacterEnemyCollisions(enemy);
-      if (this.bottle.x) {
+      if (this.bottle.y == 200) {
+        console.log('bottle on the ground');
+        
+        this.bottle.stop();
+      } else {
         this.splash(enemy);
       }
     });
@@ -142,7 +147,7 @@ class World {
 
   characterGotHit(enemy) {
     if (this.character.isColliding(enemy)) {
-      if (enemy.isDead() && !this.character.isAboveGround()) {
+      if (!enemy.isDead() && !this.character.isAboveGround()) {
         this.character.hit();
         this.character.pauseMoving();
         this.statusbarHealth.setPercentage(this.character.energy);
@@ -153,7 +158,11 @@ class World {
   checkCharacterEnemyCollisions(enemy) {
     if (this.characterJumpToKill(enemy)) {
       if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
-        enemy.die();
+        enemy.kill();
+        const indexOfEnemy = this.level.enemies.indexOf(enemy);
+        setTimeout(() => {
+          this.level.enemies.splice(indexOfEnemy, 1);
+        }, 1500);
       } else {
         this.character.hit();
       }
@@ -167,16 +176,16 @@ class World {
   splash(enemy) {
     if (this.bottle.isColliding(enemy)) {
       if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
-        enemy.die();
-        let indexOfEnemy = this.level.enemies.indexOf(enemy);
+        enemy.kill();
+        const indexOfEnemy = this.level.enemies.indexOf(enemy);
         setTimeout(() => {
           this.level.enemies.splice(indexOfEnemy, 1);
-        }, 700);
+        }, 1500);
       } else {
         enemy.hit();
       }
       this.bottle.stop();
-      this.bottle = new Bottle();
+      this.bottle = new ThrowableObject();
       this.endbossBar.setPercentage(enemy.energy);
       clearInterval(this.bottle.animateRotation);
       clearInterval(this.bottle.throwAnimation);

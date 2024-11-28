@@ -3,7 +3,7 @@ class Character extends MovableObjects {
     height = 200;
     width = 120;
     world;
-    speed = 5;
+    speed = 10;
     lastMove = new Date().getTime();
     amountOfCoins = 0;
     amountOfBottles = 0;

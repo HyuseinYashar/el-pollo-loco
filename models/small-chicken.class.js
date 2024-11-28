@@ -23,7 +23,6 @@ class SmallChicken extends MovableObjects {
         this.loadImg(this.IMAGES_DEAD);
         this.height = 50;
         this.speed = 0.15 + Math.random() * 0.21;
-        this.alive = true;
         this.animate();
         this.move();
     }
@@ -50,24 +49,20 @@ class SmallChicken extends MovableObjects {
 
     animate() {
         setInterval(() => {
-            if (this.isDead()) {
+            if (!this.isDead()) {
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.loadImg(this.IMAGES_DEAD);
             }
         }, 120);
     }
-    die() {
-        this.alive = false;
+    kill() {
         this.speed = 0;
         this.energy = 0;
-        // setInterval(() => {
-        //     this.loadImg(this.IMAGES_DEATH);
-        // }, 120);
     }
 
     isDead(){
-        return this.alive;
+        return this.energy == 0;
     }
 
     moveRight() {

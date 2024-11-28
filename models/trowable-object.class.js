@@ -51,4 +51,12 @@ class ThrowableObject extends MovableObjects {
     this.acceleration = 0;
     this.playAnimation(this.IMAGE_SPLASH);
   }
+
+  isOnTheGround(){
+    return this.y == 250;
+  }
+
+  splash(){
+    this.stop();
+  }
 }

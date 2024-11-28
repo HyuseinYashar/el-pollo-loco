@@ -65,7 +65,7 @@ class MovableObjects extends DrawableObject {
             } else {
               clearInterval(animationInterval);
             }
-          }, 400);
+          }, 200);
         }
 
 
