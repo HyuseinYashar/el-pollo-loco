@@ -137,7 +137,7 @@ class Character extends MovableObjects {
                 this.lastMove = new Date().getTime();
 
             }
-            this.world.camera_x = -this.x + 30;
+            this.world.camera_x = -this.x + 100;
         }, 1000 / 30);
 
         setInterval(() => {
@@ -162,7 +162,7 @@ class Character extends MovableObjects {
         let intervalId = setInterval(this.pauseMoving(), 10);
         clearInterval(intervalId);
         this.playAnimation(this.IMAGES_HURT);
-        this.speed = 5;
+        this.speed = 10;
     }
 
     dead() {

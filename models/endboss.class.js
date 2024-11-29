@@ -56,10 +56,10 @@ class Endboss extends MovableObjects {
   speed = 1;
 
   offset = {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    top: 60,
+    bottom: 20,
+    left: 30,
+    right: 30,
   };
   constructor() {
     super();
@@ -76,7 +76,6 @@ class Endboss extends MovableObjects {
   walkLeft() {
     if (!this.isDead()) {
       this.moveleftInt = setInterval(() => {
-        // console.log("moveleftInt");
         this.moveLeft();
       }, 200);
     }
@@ -85,15 +84,25 @@ class Endboss extends MovableObjects {
   animate() {
     this.animateInt = setInterval(() => {
       if (this.isDead()) {
-        clearInterval(this.moveleftInt);
+        // clearInterval(this.moveleftInt);
         this.playdie();
       } else if (this.isHurt()) {
         this.speed = 0;
         this.playHurt();
+      } else if(this.energy>=40 && this.energy<=80){
+        this.playAttack();
       } else {
         this.playAnimation(this.IMAGES_WALKING);
       }
     }, 200);
+  }
+
+  playAttack(){
+    this.speed  = 5
+    this.playAnimation(this.IMAGES_ATTACK)
+    setTimeout(() => {
+      this.speed = 1  
+    }, 3000);
   }
 
   hit() {
@@ -123,8 +132,8 @@ class Endboss extends MovableObjects {
   playdie() {
     this.speed = 0;
     this.playOnce(this.IMAGES_DEAD);
-    clearInterval(this.moveleftInt);
-    clearInterval(this.animateInt);
+    // clearInterval(this.moveleftInt);
+    // clearInterval(this.animateInt);
     setTimeout(() => {
       this.y = -1000;
     }, 1500);

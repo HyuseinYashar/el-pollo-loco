@@ -15,7 +15,7 @@ class SmallChicken extends MovableObjects {
         left: 0,
         right: 0,
     }
-    alive;
+    alive = true;
     energy = 20;
     constructor() {
         super();
@@ -49,7 +49,7 @@ class SmallChicken extends MovableObjects {
 
     animate() {
         setInterval(() => {
-            if (!this.isDead()) {
+            if (this.isDead()) {
                 this.playAnimation(this.IMAGES_WALKING);
             } else {
                 this.loadImg(this.IMAGES_DEAD);
@@ -58,11 +58,11 @@ class SmallChicken extends MovableObjects {
     }
     kill() {
         this.speed = 0;
-        this.energy = 0;
+        this.alive = false;
     }
 
     isDead(){
-        return this.energy == 0;
+        return this.alive;
     }
 
     moveRight() {

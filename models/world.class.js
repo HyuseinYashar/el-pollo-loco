@@ -7,8 +7,9 @@ class World {
   throwableObjects = [];
   bottle = new ThrowableObject();
 
-  level = level1;
+  enemies = level1.enemies;
 
+  level = level1;
   canvas;
   ctx;
   keyboard;
@@ -42,7 +43,7 @@ class World {
       if (this.character.amountOfBottles < 0) {
         this.character.amountOfBottles = 0;
       }
-      
+
       this.statusbarBottle.setPercentage(this.character.amountOfBottles);
     }
   }
@@ -58,6 +59,7 @@ class World {
     this.addObjectsToMap(this.level.backgroundObjects);
     this.addObjectsToMap(this.level.clouds);
     this.addToMap(this.character);
+    this.addObjectsToMap(this.enemies);
     this.addObjectsToMap(this.throwableObjects);
     this.addObjectsToMap(this.level.coins);
     this.addObjectsToMap(this.level.bottles);
@@ -69,8 +71,6 @@ class World {
     this.addToMap(this.statusbarCoin);
     this.addToMap(this.endbossBar);
     this.ctx.translate(this.camera_x, 0);
-
-    this.addObjectsToMap(this.level.enemies);
 
     this.ctx.translate(-this.camera_x, 0);
     let self = this;
@@ -113,13 +113,7 @@ class World {
     this.level.enemies.forEach((enemy) => {
       this.characterGotHit(enemy);
       this.checkCharacterEnemyCollisions(enemy);
-      if (this.bottle.y == 200) {
-        console.log('bottle on the ground');
-        
-        this.bottle.stop();
-      } else {
-        this.splash(enemy);
-      }
+      this.splash(enemy);
     });
   }
 
@@ -147,9 +141,8 @@ class World {
 
   characterGotHit(enemy) {
     if (this.character.isColliding(enemy)) {
-      if (!enemy.isDead() && !this.character.isAboveGround()) {
+      if (enemy.isDead() && !this.character.isAboveGround()) {
         this.character.hit();
-        this.character.pauseMoving();
         this.statusbarHealth.setPercentage(this.character.energy);
       }
     }
@@ -162,7 +155,7 @@ class World {
         const indexOfEnemy = this.level.enemies.indexOf(enemy);
         setTimeout(() => {
           this.level.enemies.splice(indexOfEnemy, 1);
-        }, 1500);
+        }, 700);
       } else {
         this.character.hit();
       }
@@ -180,13 +173,13 @@ class World {
         const indexOfEnemy = this.level.enemies.indexOf(enemy);
         setTimeout(() => {
           this.level.enemies.splice(indexOfEnemy, 1);
-        }, 1500);
+        }, 700);
       } else {
         enemy.hit();
+        this.endbossBar.setPercentage(enemy.energy);
       }
       this.bottle.stop();
       this.bottle = new ThrowableObject();
-      this.endbossBar.setPercentage(enemy.energy);
       clearInterval(this.bottle.animateRotation);
       clearInterval(this.bottle.throwAnimation);
     }

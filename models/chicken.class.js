@@ -5,7 +5,7 @@ class Chicken extends MovableObjects {
     width = 50;
     leftId;
     rightId;
-    alive;
+    alive = true;
 
     energy = 20;
     IMAGES_WALKING = [
@@ -52,7 +52,7 @@ class Chicken extends MovableObjects {
 
     animate() {
         setInterval(() => {
-            if(!this.isDead()){
+            if(this.isDead()){
                 this.playAnimation(this.IMAGES_WALKING);
             }else {
                 this.loadImg(this.IMAGES_DEATH);
@@ -62,11 +62,11 @@ class Chicken extends MovableObjects {
 
     kill() {
         this.speed = 0;
-        this.energy = 0;
+        this.alive = false;
     }
 
     isDead(){
-        return this.energy == 0;
+        return this.alive;
     }
 
     moveRight() {
