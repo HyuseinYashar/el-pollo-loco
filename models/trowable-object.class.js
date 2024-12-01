@@ -16,24 +16,27 @@ class ThrowableObject extends MovableObjects {
   ];
 
   offset = {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    top: 20,
+    bottom: 20,
+    left: 20,
+    right: 20,
   };
   animateRotation;
+  damaging;
 
-  constructor(x, y) {
+  constructor(x, y,z) {
     super();
     this.loadImg(this.IMAGE_BOTTLE);
     this.loadImages(this.IMAGES_ROTATING);
     this.loadImages(this.IMAGE_SPLASH);
     this.x = x;
     this.y = y;
+    this.otherDirection = z;
     this.height = 80;
     this.width = 100;
     this.animate();
     this.trow();
+    this.damaging = true;
   }
 
   animate() {
@@ -46,17 +49,19 @@ class ThrowableObject extends MovableObjects {
   animateSplash() {}
 
   stop() {
+    this.damaging = false;
     this.speedY = 0;
     this.speed = 0;
     this.acceleration = 0;
+  }
+
+  isOnTheGround() {
+    return this.y > 336;
+  }
+
+  splash() {
     this.playAnimation(this.IMAGE_SPLASH);
-  }
-
-  isOnTheGround(){
-    return this.y == 250;
-  }
-
-  splash(){
-    this.stop();
+    clearInterval(this.animateRotation);
+    clearInterval(this.throwAnimation);
   }
 }

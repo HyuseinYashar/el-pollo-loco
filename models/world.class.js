@@ -30,20 +30,38 @@ class World {
       this.checkThrowObjects();
       this.collectingCoins();
       this.collectingBottles();
-    }, 100);
+      this.checkForFallenBottle();
+    }, 200);
+  }
+
+  checkForFallenBottle() {
+    if (this.bottle.isOnTheGround()) {
+      this.stopAndSplash();
+    }
+  }
+
+  stopAndSplash() {
+    clearInterval(this.animateRotation);
+    clearInterval(this.throwAnimation);
+    this.bottle.stop();
+    this.bottle.splash();
+    setTimeout(() => {
+      this.bottle = new ThrowableObject();
+    }, 700);
   }
 
   checkThrowObjects() {
     if (this.keyboard.D && this.character.amountOfBottles > 0) {
       this.bottle = new ThrowableObject(
-        this.character.x + 100,
-        this.character.y + 100
+        this.character.x + 50,
+        this.character.y + 50,
+        this.character.otherDirection
       );
+
       this.character.amountOfBottles -= 10;
       if (this.character.amountOfBottles < 0) {
         this.character.amountOfBottles = 0;
       }
-
       this.statusbarBottle.setPercentage(this.character.amountOfBottles);
     }
   }
@@ -113,7 +131,7 @@ class World {
     this.level.enemies.forEach((enemy) => {
       this.characterGotHit(enemy);
       this.checkCharacterEnemyCollisions(enemy);
-      this.splash(enemy);
+      this.bottleEnemyCollision(enemy);
     });
   }
 
@@ -141,8 +159,9 @@ class World {
 
   characterGotHit(enemy) {
     if (this.character.isColliding(enemy)) {
-      if (enemy.isDead() && !this.character.isAboveGround()) {
-        this.character.hit();
+      if (!enemy.isDead() && !this.character.isAboveGround()) {
+        this.character.hit(enemy);
+        this.character.pauseMoving();
         this.statusbarHealth.setPercentage(this.character.energy);
       }
     }
@@ -166,22 +185,24 @@ class World {
     return this.character.isColliding(enemy) && this.character.isAboveGround();
   }
 
-  splash(enemy) {
+  bottleEnemyCollision(enemy) {
     if (this.bottle.isColliding(enemy)) {
       if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
-        enemy.kill();
+        if (this.bottle.damaging) {
+          enemy.kill();
+        }
+        this.stopAndSplash(); 
         const indexOfEnemy = this.level.enemies.indexOf(enemy);
         setTimeout(() => {
           this.level.enemies.splice(indexOfEnemy, 1);
         }, 700);
-      } else {
-        enemy.hit();
+      } else if (enemy instanceof Endboss) {
         this.endbossBar.setPercentage(enemy.energy);
+        if (this.bottle.damaging) {
+          enemy.hit();
+        }
+        this.stopAndSplash();
       }
-      this.bottle.stop();
-      this.bottle = new ThrowableObject();
-      clearInterval(this.bottle.animateRotation);
-      clearInterval(this.bottle.throwAnimation);
     }
   }
 }

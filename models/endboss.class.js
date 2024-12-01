@@ -48,18 +48,18 @@ class Endboss extends MovableObjects {
     "img/4_enemie_boss_chicken/5_dead/G26.png",
   ];
 
-  height = 500;
-  width = 300;
-  x = 1700;
-  y = -30;
+  height = 340;
+  width = 250;
+  x = 2000;
+  y = 120;
   energy = 100;
   speed = 1;
 
   offset = {
     top: 60,
     bottom: 20,
-    left: 30,
-    right: 30,
+    left: 0,
+    right: 0,
   };
   constructor() {
     super();

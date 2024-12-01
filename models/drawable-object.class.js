@@ -50,7 +50,8 @@ class DrawableObject {
           this instanceof Character ||
           this instanceof Chicken ||
           this instanceof SmallChicken ||
-          this instanceof Endboss
+          this instanceof Endboss ||
+          this instanceof ThrowableObject
         ) {
         //   // Zeichnet den normalen Rahmen um das Objekt
         //   ctx.beginPath();
