@@ -8,6 +8,10 @@ class Character extends MovableObjects {
   amountOfCoins = 0;
   amountOfBottles = 0;
 
+  idleInt;
+  statusInt;
+  moveInt;
+
   offset = {
     top: 50,
     bottom: 10,
@@ -85,8 +89,9 @@ class Character extends MovableObjects {
     this.loadImages(this.IMAGES_IDLE);
     this.loadImages(this.IMAGES_LONG_IDLE);
     this.applyGravity();
+    this.idleAnimate();
+    this.animateInt();
     this.move();
-    this.animate();
   }
 
   moveLeft() {
@@ -95,32 +100,64 @@ class Character extends MovableObjects {
     // this.walking_sound.play();
   }
 
-  animate() {
+  idleAnimate() {
     setInterval(() => {
       let timepassed = new Date().getTime() - this.lastMove;
       timepassed = timepassed / 1000;
-      if (timepassed > 8.0 && !this.isDead() && !this.hurting()) {
+      if (timepassed > 6.0 && !this.isDead() && !this.isHurt()) {
         this.longIdle();
+      } else if(this.isDead()){
+        this.pepeDied();
       } else {
         this.idle();
       }
-    }, 200);
-
-    setInterval(() => {
-        if (this.isHurt(this)) {
-          this.hurting();
-        } else if (this.isDead()) {
-          this.dead();
-        } else if (this.isAboveGround(this.y)) {
-          this.jumping();
-        } else {
-          if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
-            this.walking();
-            this.lastMove = new Date().getTime();
-          }
-        }
-      }, 150);
+    }, 100);
   }
+
+  animateInt() {
+    setInterval(() => {
+      if (this.isHurt(this)) {
+        this.hurting();
+      } else if (this.isAboveGround(this.y)) {
+        this.jumping();
+      } else {
+        if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
+          this.walking();
+          this.lastMove = new Date().getTime();
+        }
+      }
+    }, 100);
+  }
+  move() {
+    setInterval(() => {
+      this.pauseSounds();
+
+      if (
+        this.world.keyboard.RIGHT &&
+        this.x < this.world.level.level_end_x + 100 &&
+        !this.isDead()
+      ) {
+        this.moveRight();
+        this.lastMove = new Date().getTime();
+      }
+
+      if (this.world.keyboard.LEFT && this.x > 0 && !this.isDead()) {
+        this.moveLeft();
+        this.lastMove = new Date().getTime();
+      }
+
+      if (
+        this.world.keyboard.UP &&
+        !this.isAboveGround(this.y) &&
+        !this.isDead()
+      ) {
+        this.jump();
+        this.lastMove = new Date().getTime();
+      }
+      this.world.camera_x = -this.x + 200;
+    }, 1000 / 30);
+  }
+
   idle() {
     this.playAnimation(this.IMAGES_IDLE);
   }
@@ -129,42 +166,28 @@ class Character extends MovableObjects {
     this.playAnimation(this.IMAGES_LONG_IDLE);
   }
 
-  move() {
-    setInterval(() => {
-      this.pauseSounds();
-      console.log(this.x);
-      
-      if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x+100) {
-        this.moveRight();
-        this.lastMove = new Date().getTime();
-      }
-
-      if (this.world.keyboard.LEFT && this.x > 0) {
-        this.moveLeft();
-        this.lastMove = new Date().getTime();
-      }
-
-      if (this.world.keyboard.UP && !this.isAboveGround(this.y)) {
-        this.jump();
-        this.lastMove = new Date().getTime();
-      }
-      this.world.camera_x = -this.x + 200;
-    }, 1000 / 30);
-
-  }
 
   hurting() {
-    this.pauseMoving();
-    this.playOnce(this.IMAGES_HURT);
+    this.speed = 0;
+    this.playAnimation(this.IMAGES_HURT);
     setTimeout(() => {
-    this.speed = 10;
-    }, 500);
-    
+      this.speed = 10;
+    }, 1000);
   }
 
-  dead() {
-    this.playOnce(this.IMAGES_DEAD);
-
+  pepeDied() {
+    
+    setInterval(() => {
+      this.playAnimation(this.IMAGES_DEAD);
+      this.y += 10;
+      this.x += 5;
+      if(this.y >300){
+        setTimeout(() => {
+          this.clearAllInt()
+        }, 550);
+      }
+    }, 500);
+    // this.gameOver();
   }
 
   jumping() {
@@ -187,7 +210,7 @@ class Character extends MovableObjects {
   }
 
   collectBottle() {
-    this.amountOfBottles += 10;
+    this.amountOfBottles += 20;
     if (this.amountOfBottles > 100) {
       this.amountOfBottles = 100;
     }

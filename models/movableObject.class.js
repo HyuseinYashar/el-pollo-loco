@@ -11,6 +11,13 @@ class MovableObjects extends DrawableObject {
   jumping_sound = new Audio("audio/jumping.mp3");
   bottle_drop = new Audio("audio/bottle_drop.mp3");
 
+  clearAllInt(){
+    for (let index = 0; index < 999; index++) {
+      clearInterval(index);
+      
+    }
+  }
+
   move() {
     setInterval(() => {
       if (this.x < 200) {
@@ -112,6 +119,7 @@ class MovableObjects extends DrawableObject {
     this.speed = 0;
     this.dead = true;
   }
+
 
   isDead() {
     return this.energy == 0;

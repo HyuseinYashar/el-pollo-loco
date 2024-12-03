@@ -138,10 +138,12 @@ class World {
   collectingCoins() {
     this.level.coins.forEach((coin, i) => {
       if (this.character.isColliding(coin)) {
-        this.character.collectCoin();
-        // this.coins_sound.play();
-        this.level.coins.splice(i, 1);
-        this.statusbarCoin.setPercentage(this.character.amountOfCoins);
+        if(this.character.amountOfCoins <= 100){
+          this.character.collectCoin();
+          // this.coins_sound.play();
+          this.level.coins.splice(i, 1);
+          this.statusbarCoin.setPercentage(this.character.amountOfCoins);
+        }
       }
     });
   }
@@ -149,10 +151,12 @@ class World {
   collectingBottles() {
     this.level.bottles.forEach((bottle, i) => {
       if (this.character.isColliding(bottle)) {
-        this.character.collectBottle();
-        // this.coins_sound.play();
-        this.level.bottles.splice(i, 1);
-        this.statusbarBottle.setPercentage(this.character.amountOfBottles);
+        if (this.character.amountOfBottles <= 50) {
+          this.character.collectBottle();
+          // this.coins_sound.play();
+          this.level.bottles.splice(i, 1);
+          this.statusbarBottle.setPercentage(this.character.amountOfBottles);
+        }
       }
     });
   }
@@ -173,8 +177,10 @@ class World {
         enemy.kill();
         const indexOfEnemy = this.level.enemies.indexOf(enemy);
         setTimeout(() => {
-          this.level.enemies.splice(indexOfEnemy, 1);
-        }, 700);
+          if (!(enemy instanceof Endboss)) {
+            this.level.enemies.splice(indexOfEnemy, 0);
+          }
+        }, 500);
       } else {
         this.character.hit();
       }
@@ -191,7 +197,7 @@ class World {
         if (this.bottle.damaging) {
           enemy.kill();
         }
-        this.stopAndSplash(); 
+        this.stopAndSplash();
         const indexOfEnemy = this.level.enemies.indexOf(enemy);
         setTimeout(() => {
           this.level.enemies.splice(indexOfEnemy, 1);
