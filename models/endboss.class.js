@@ -132,11 +132,10 @@ class Endboss extends MovableObjects {
   playdie() {
     this.speed = 0;
     this.playOnce(this.IMAGES_DEAD);
-    // clearInterval(this.moveleftInt);
-    // clearInterval(this.animateInt);
     setTimeout(() => {
       this.y = -1000;
     }, 1500);
+    this.win_sound.play();
   }
 
   isHurt() {

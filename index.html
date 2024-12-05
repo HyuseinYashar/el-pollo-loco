@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>El Pollo Loco</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <script src="./models/drawable-object.class.js"></script>
     <script src="./models/movableObject.class.js"></script>
     <script src="./models/statusbar-health.class.js"></script>
@@ -25,12 +25,128 @@
     <script src="./models/trowable-object.class.js"></script>
     <script src="./levels/level1.js"></script>
     <script src="./js/game.js"></script>
-</head>
-<body onload="init()">
+    <script src="./js/script.js"></script>
+  </head>
+  <body onload="initBody()">
     <h1>El Pollo Loco</h1>
-    <canvas id="canvas" height="480" width="720"></canvas>
 
+    <div id="startscreen" class="start_screen" style="display: flex">
+      <button onclick="startGame()" class="startgamebtn">Start Game</button>
+    </div>
 
+    <div id="gameover" class="gameoverscreen" style="display: none">
+      <button onclick="restartGame()" class="tryagainbtn">Try Again</button>
+      <button onclick="goToStartMenu()" class="startmenübtn">Start Menü</button>
+    </div>
+
+    <div id="instructionid" class="instruction">
+      <div class="insticons">
+        <img class="mobileicon" src="img/icons/leftarrow.png" />
+        <img class="mobileicon" src="img/icons/rightarrow.png" />
+        <img class="mobileicon" src="img/icons/d.png" />
+        <img class="mobileicon" src="img/icons/space.png" />
+      </div>
+      <div class="detailsinstruction">
+        <p>Walk Left</p>
+        <p> Walk Right</p>
+        <p> Jump</p>
+        <p> Throw</p>
+      </div>
+      <div>
+        <button onclick="hideInstructions()" class="close-btn">Close</button>
+      </div>
+    </div>
+
+    <div id="win" class="winningscreen" style="display: none">
+      <div>
+        <button onclick="restartGame()" class="playagainbtn">Play Again</button>
+        <button onclick="goToStartMenu()" class="winstartmenübtn">
+          Start Menü
+        </button>
+      </div>
+    </div>
+
+    <div id="impressum" class="policy">
+      <div class="closepolicy">
+        <button onclick="hidepolicy()" class="close-btn">Close</button>
+      </div>
+      <h4>Impressum</h4>
+      <p>Angaben gemäß § 5 TMG</p>
+      <p>
+        Hyusein Yashar <br />
+        <br />
+      </p>
+      <p><strong>Vertreten durch: </strong><br /></p>
+      <p>
+        Developer Akademie GmbH <br />
+        Tassiloplatz 25 <br />
+        81541 München<br />
+      </p>
+      <p>
+        <strong>Haftungsausschluss: </strong><br /><br /><strong
+          >Haftung für Links</strong
+        ><br /><br />
+        Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren
+        Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden
+        Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten
+        Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten
+        verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der
+        Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte
+        waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente
+        inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete
+        Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden
+        von Rechtsverletzungen werden wir derartige Links umgehend entfernen.<br /><br /><strong
+          >Urheberrecht</strong
+        ><br /><br />
+        Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen
+        Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung,
+        Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der
+        Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des
+        jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite
+        sind nur für den privaten, nicht kommerziellen Gebrauch gestattet.
+        Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden,
+        werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte
+        Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine
+        Urheberrechtsverletzung aufmerksam werden, bitten wir um einen
+        entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden
+        wir derartige Inhalte umgehend entfernen.
+      </p>
+      <br />
+      Website Impressum von
+      <a href="https://www.impressum-generator.de" target="_blank"
+        >impressum-generator.de</a
+      >
+      <br />
+      Hintergrundbilder und Icons von
+      <a
+        href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=2042738"
+        target="_blank"
+        >Pixabay</a
+      ><br />
+    </div>
+
+    <canvas id="canvas" height="480" width="720" style="display: none"></canvas>
+
+    <footer id="footerid">
+      <img
+        id="soundid"
+        class="footericon"
+        onclick="mute()"
+        src="img/icons/soundon.png"
+      />
+      <img
+        id="instruction2"
+        onclick="showInstructions()"
+        class="footericon2"
+        src="img/icons/controllbtn.png"
+      />
+      <img
+        id="policyid"
+        onclick="showpolicy()"
+        class="footericon"
+        src="img/icons/info.png"
+      />
+    </footer>
 
     <!-- 
      todo: 
@@ -41,5 +157,5 @@
         responsive
         impressum
     -->
-</body>
+  </body>
 </html>

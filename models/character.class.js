@@ -106,7 +106,7 @@ class Character extends MovableObjects {
       timepassed = timepassed / 1000;
       if (timepassed > 6.0 && !this.isDead() && !this.isHurt()) {
         this.longIdle();
-      } else if(this.isDead()){
+      } else if (this.isDead()) {
         this.pepeDied();
       } else {
         this.idle();
@@ -130,7 +130,6 @@ class Character extends MovableObjects {
   }
   move() {
     setInterval(() => {
-      this.pauseSounds();
 
       if (
         this.world.keyboard.RIGHT &&
@@ -159,13 +158,19 @@ class Character extends MovableObjects {
   }
 
   idle() {
+    this.snooring_sound.pause();
     this.playAnimation(this.IMAGES_IDLE);
+    if(this.soundsOn){
+
+    }
   }
 
   longIdle() {
     this.playAnimation(this.IMAGES_LONG_IDLE);
+    if(this.soundsOn){
+      this.snooring_sound.play();
+    }
   }
-
 
   hurting() {
     this.speed = 0;
@@ -176,17 +181,17 @@ class Character extends MovableObjects {
   }
 
   pepeDied() {
-    
     setInterval(() => {
       this.playAnimation(this.IMAGES_DEAD);
       this.y += 10;
       this.x += 5;
-      if(this.y >300){
+      if (this.y > 300) {
         setTimeout(() => {
-          this.clearAllInt()
+          this.clearAllInt();
         }, 550);
       }
     }, 500);
+    this.lose_sound.play();
     // this.gameOver();
   }
 
@@ -207,12 +212,18 @@ class Character extends MovableObjects {
     if (this.amountOfCoins > 100) {
       this.amountOfCoins = 100;
     }
+    if (this.soundsOn) {
+      this.collecting_soud.play();
+    }
   }
 
   collectBottle() {
     this.amountOfBottles += 20;
     if (this.amountOfBottles > 100) {
       this.amountOfBottles = 100;
+    }
+    if (this.soundsOn) {
+      this.collecting_soud.play();
     }
   }
 }

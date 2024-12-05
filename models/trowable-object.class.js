@@ -40,7 +40,6 @@ class ThrowableObject extends MovableObjects {
   }
 
   animate() {
-    this.pauseSounds();
     this.animateRotation = setInterval(() => {
       this.playAnimation(this.IMAGES_ROTATING);
     });
@@ -63,5 +62,8 @@ class ThrowableObject extends MovableObjects {
     this.playAnimation(this.IMAGE_SPLASH);
     clearInterval(this.animateRotation);
     clearInterval(this.throwAnimation);
+    if(this.soundsOn){
+      this.bottle_drop.play();
+    }
   }
 }

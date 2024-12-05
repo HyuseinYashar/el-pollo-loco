@@ -31,9 +31,26 @@ class World {
       this.collectingCoins();
       this.collectingBottles();
       this.checkForFallenBottle();
+      this.checkGame();
     }, 200);
   }
 
+  checkGame() {
+    const endboss = this.level.enemies.find(
+      (enemy) => enemy instanceof Endboss
+    );
+    if (endboss.isDead() && !this.character.isDead()) {
+      setTimeout(() => {
+        winScreen();
+      }, 2000);
+    }
+
+    if (this.character.isDead()) {
+      setTimeout(() => {
+        loseScreen();
+      }, 2000);
+    }
+  }
   checkForFallenBottle() {
     if (this.bottle.isOnTheGround()) {
       this.stopAndSplash();
@@ -138,9 +155,8 @@ class World {
   collectingCoins() {
     this.level.coins.forEach((coin, i) => {
       if (this.character.isColliding(coin)) {
-        if(this.character.amountOfCoins <= 100){
+        if (this.character.amountOfCoins <= 100) {
           this.character.collectCoin();
-          // this.coins_sound.play();
           this.level.coins.splice(i, 1);
           this.statusbarCoin.setPercentage(this.character.amountOfCoins);
         }
@@ -153,7 +169,6 @@ class World {
       if (this.character.isColliding(bottle)) {
         if (this.character.amountOfBottles <= 50) {
           this.character.collectBottle();
-          // this.coins_sound.play();
           this.level.bottles.splice(i, 1);
           this.statusbarBottle.setPercentage(this.character.amountOfBottles);
         }
