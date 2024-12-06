@@ -7,8 +7,15 @@ bg_music = new Audio("audio/bg_music.mp3");
 const originalPlay = Audio.prototype.play;
 
 function init() {
+  keyboard.mobileControl();
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
+  bg_music.loop = true;
+  bg_music.volume = 0.01;
+
+  if (!soundMuted) {
+    bg_music.play();
+  }
 }
 
 function startGame() {}
@@ -59,17 +66,6 @@ Audio.prototype.play = function () {
     return originalPlay.call(this);
   }
 };
-
-function init() {
-  canvas = document.getElementById("canvas");
-  world = new World(canvas, keyboard);
-  bg_music.loop = true;
-  bg_music.volume = 0.01;
-
-  if (!soundMuted) {
-    bg_music.play();
-  }
-}
 
 function endGame() {
   world.gameOver = true;

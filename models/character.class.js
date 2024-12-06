@@ -192,7 +192,9 @@ class Character extends MovableObjects {
       }
     }, 500);
     this.lose_sound.play();
-    // this.gameOver();
+    setTimeout(() => {
+      gameOver();
+    }, 1500);
   }
 
   jumping() {

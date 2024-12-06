@@ -223,6 +223,60 @@ footer {
 }
 
 .closepolicy {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.orientation-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 1);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 44px;
+  z-index: 9999;
+  display: none;
+}
+
+.orientation-warning p {
+  padding: 40px;
+}
+
+.mobilecontrol {
+  height: 200px;
+  width: 7%;
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid black;
+  border-radius: 16px;
+  margin: 16px;
+  background-color: lightgoldenrodyellow;
+  padding: 8px;
+}
+
+.mobileicon {
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}
+
+#fullscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 480px !important;
+
+}
+
+@font-face {
+  font-family: "AbrilFatface-Regular";
+  src: url('font/AbrilFatface-Regular.ttf');
 }
