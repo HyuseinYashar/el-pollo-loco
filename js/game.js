@@ -6,6 +6,10 @@ const originalPlay = Audio.prototype.play;
 let bg_music = new Audio('audio/bg_music.mp3');
 
 
+/**
+ * Initializes the game by setting up mobile controls and getting references to the HTML canvas
+ * element and the World instance.
+ */
 function init() {
   keyboard.mobileControl();
   canvas = document.getElementById("canvas");
@@ -53,12 +57,21 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
+/**
+ * Overwrites the default Audio.prototype.play function to not play the audio if the sound is muted.
+ * @this Audio
+ * @returns {void}
+ */
 Audio.prototype.play = function () {
   if (!soundMuted) {
     return originalPlay.call(this);
   }
 };
 
+/**
+ * Ends the game by setting the gameOver flag to true, pausing the background music,
+ * and clearing all active intervals. This function effectively halts the game state.
+ */
 function endGame() {
   world.gameOver = true;
   bg_music.pause();
@@ -66,6 +79,11 @@ function endGame() {
   // startGame();
 }
 
+/**
+ * Toggles the sound on or off. If the sound is muted, the sound icon in the footer will be
+ * replaced with the muted icon. If the sound is not muted, the sound icon in the footer will
+ * be replaced with the normal icon. The state of the sound is stored in local storage.
+ */
 function mute() {
   const soundIcon = document.getElementById("soundid");
   soundMuted = !soundMuted;
@@ -77,6 +95,13 @@ function mute() {
   }
 }
 
+/**
+ * Initializes the game body by hiding the canvas, pausing the background music,
+ * and setting the sound icon in the footer to the correct state based on the
+ * value stored in local storage. If the sound is muted, the sound icon in the footer
+ * will be replaced with the muted icon. If the sound is not muted, the sound icon
+ * in the footer will be replaced with the normal icon.
+ */
 function initBody() {
   document.getElementById("canvas").style.display = "none";
   bg_music.pause();

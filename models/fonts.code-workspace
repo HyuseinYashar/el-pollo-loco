@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "fonts",
+			"path": "../../EL_POLLO_LOCO_KADIR/fonts"
+		},
+		{
+			"name": "el-polo-loco",
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "el-polo-loco"
+	}
+}

@@ -151,7 +151,7 @@ class Character extends MovableObjects {
       }
 
       if (
-        this.world.keyboard.UP &&
+        this.world.keyboard.SPACE &&
         !this.isAboveGround(this.y) &&
         !this.isDead()
       ) {
@@ -165,6 +165,7 @@ class Character extends MovableObjects {
   idle() {
     this.playAnimation(this.IMAGES_IDLE);
     this.walking_sound.pause();
+    this.snooring_sound.pause();
   }
 
   longIdle() {
@@ -174,7 +175,6 @@ class Character extends MovableObjects {
       this.walking_sound.pause();
     } catch (e) {
       console.log(e);
-      
     }
   }
 

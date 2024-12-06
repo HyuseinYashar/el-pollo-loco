@@ -47,7 +47,7 @@ class Keyboard {
       "touchstart",
       (e) => {
         e.preventDefault();
-        this.UP = true;
+        this.SPACE = true;
       },
       { passive: false }
     );
@@ -56,7 +56,7 @@ class Keyboard {
       "touchend",
       (e) => {
         e.preventDefault();
-        this.UP = false;
+        this.SPACE = false;
       },
       { passive: false }
     );
