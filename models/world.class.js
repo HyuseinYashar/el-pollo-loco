@@ -315,26 +315,21 @@ checkForFallenBottle() {
    * @param {MovableObject} enemy - The enemy that the character is colliding with.
    */
   checkCharacterEnemyCollisions(enemy) {
-    if (this.characterJumpToKill(enemy)) {
-      if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
-        enemy.kill();
-        if (this.soundsOn) {
-          this.character.frag_sound.play();
-        }
-        const indexOfEnemy = this.level.enemies.indexOf(enemy);
-        setTimeout(() => {
-          if (!(enemy instanceof Endboss)) {
-            this.level.enemies.splice(indexOfEnemy, 1);
-          }
-        }, 200);
-      } else {
-        this.character.hit();
-        if (this.soundsOn) {
-          this.character.hurt_sound.play();
-        }
-      }
+    if (!this.characterJumpToKill(enemy)) {
+      this.character.hit();
+      this.character.hurt_sound.play();
+      return;
+    }
+  
+    if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
+      enemy.kill();
+      if (this.soundsOn) this.character.frag_sound.play();
+      setTimeout(() => {
+        this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
+      }, 200);
     }
   }
+  
 
   /**
    * Checks if the character can hit and potentially kill the enemy from above.
@@ -357,27 +352,20 @@ checkForFallenBottle() {
    * @param {MovableObject} enemy - The enemy that the bottle is colliding with.
    */
   bottleEnemyCollision(enemy) {
-    if (this.bottle.isColliding(enemy)) {
-      if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
-        if (this.bottle.damaging) {
-          enemy.kill();
-        }
-        // this.stopAndSplash();
-        const indexOfEnemy = this.level.enemies.indexOf(enemy);
-        setTimeout(() => {
-          this.level.enemies.splice(indexOfEnemy, 1);
-        }, 700);
-      } else if (enemy instanceof Endboss) {
-        this.endbossBar.setPercentage(enemy.energy);
-        if (this.bottle.damaging) {
-          enemy.hit();
-        }
-        // this.stopAndSplash();
-      }
-      this.stopAndSplash();
-      if (this.soundsOn) {
-        this.bottle.bottle_drop.play();
-      }
+    if (!this.bottle.isColliding(enemy)) return;
+  
+    if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
+      if (this.bottle.damaging) enemy.kill();
+      setTimeout(() => {
+        this.level.enemies.splice(this.level.enemies.indexOf(enemy), 1);
+      }, 700);
+    } else if (enemy instanceof Endboss) {
+      this.endbossBar.setPercentage(enemy.energy);
+      if (this.bottle.damaging) enemy.hit();
     }
+  
+    this.stopAndSplash();
+    this.bottle.bottle_drop.play();
   }
+  
 }

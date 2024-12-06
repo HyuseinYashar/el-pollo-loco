@@ -10,6 +10,12 @@ class StatusbarHealth extends DrawableObject {
 
   percentage = 100;
 
+  /**
+   * Constructs a new StatusbarHealth object
+   *
+   * Loads the images for health bar, sets the position to the top left of the screen
+   * and sets the percentage to 100
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES_HEALTH);
@@ -20,6 +26,10 @@ class StatusbarHealth extends DrawableObject {
     this.setPercentage(100);
   }
 
+  /**
+   * Sets the percentage of health bar
+   * @param {number} percentage - A number between 0 and 100, representing the current percentage of health
+   */
   setPercentage(percentage) {
     this.percentage = percentage;
     let path = this.IMAGES_HEALTH[this.resolveImageIndex()];

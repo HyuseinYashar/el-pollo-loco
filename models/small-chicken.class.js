@@ -16,6 +16,12 @@ class SmallChicken extends MovableObjects {
     left: 0,
     right: 0,
   };
+  /**
+   * Class constructor
+   * @description Sets up the object with the appropriate images,
+   * height, speed and starts the animation and movement.
+   * @author Johannes Konert
+   */
   constructor() {
     super();
     this.loadImages(this.IMAGES_WALKING);
@@ -27,6 +33,13 @@ class SmallChicken extends MovableObjects {
     this.dead = false;
   }
 
+  /**
+   * Animation method for the chicken
+   * @description This method is used to animate the chicken.
+   * It will play the walking animation if the chicken is not dead,
+   * otherwise it will load the dead image.
+   * @author Johannes Konert
+   */
   animate() {
     setInterval(() => {
       if (!this.isDead()) {

@@ -25,6 +25,12 @@ class ThrowableObject extends MovableObjects {
   damaging;
   bottle_drop = new Audio("audio/bottle_drop.mp3");
 
+  /**
+   * Create a new ThrowableObject.
+   * @param {number} x the x position of the object
+   * @param {number} y the y position of the object
+   * @param {boolean} z if true, the object will be thrown to the left, otherwise to the right
+   */
   constructor(x, y,z) {
     super();
     this.loadImg(this.IMAGE_BOTTLE);
@@ -40,14 +46,26 @@ class ThrowableObject extends MovableObjects {
     this.damaging = true;
   }
 
+  /**
+   * Start the bottle's rotation animation.
+   * This method is called automatically during the object's construction.
+   * The animation is done by calling the `playAnimation` method and passing the
+   * `IMAGES_ROTATING` array to it. The animation is played every 30 milliseconds.
+   * The `animateRotation` property is set to the interval ID returned by
+   * `setInterval`.
+   */
   animate() {
     this.animateRotation = setInterval(() => {
       this.playAnimation(this.IMAGES_ROTATING);
     });
   }
 
-  animateSplash() {}
-
+  /**
+   * Stop the bottle's animation.
+   * This method is called when the bottle has fallen to the ground.
+   * It sets the `damaging` property to false, the `speedY` property to 0,
+   * the `speed` property to 0 and the `acceleration` property to 0.
+   */
   stop() {
     this.damaging = false;
     this.speedY = 0;
@@ -55,10 +73,20 @@ class ThrowableObject extends MovableObjects {
     this.acceleration = 0;
   }
 
+  /**
+   * Check if the bottle has fallen to the ground.
+   * @returns {boolean} true if the bottle is on the ground, false otherwise.
+   */
   isOnTheGround() {
     return this.y > 336;
   }
 
+  /**
+   * Plays the bottle's splash animation.
+   * This method is called when the bottle has fallen to the ground.
+   * It plays the animation in the `IMAGE_SPLASH` array and plays the bottle drop sound.
+   * It also clears the `animateRotation` and `throwAnimation` intervals.
+   */
   splash() {
     this.playAnimation(this.IMAGE_SPLASH);
     this.bottle_drop.play();

@@ -20,6 +20,12 @@ class MovableObjects extends DrawableObject {
     }
   }
 
+  /**
+   * Makes the object move back and forth horizontally.
+   * The object will reverse direction whenever it hits the left or right border of the screen.
+   * @memberof MovableObjects
+   * @instance
+   */
   move() {
     setInterval(() => {
       if (this.x < 200) {
@@ -37,6 +43,12 @@ class MovableObjects extends DrawableObject {
     }, 1000 / 60);
   }
 
+  /**
+   * Move the object to the right.
+   * If the object is a character, set `otherDirection` to false.
+   * @memberof MovableObjects
+   * @instance
+   */
   moveRight() {
     this.x += this.speed;
     if (this instanceof Character) {
@@ -44,10 +56,22 @@ class MovableObjects extends DrawableObject {
     }
   }
 
+  /**
+   * Move the object to the left.
+   * @memberof MovableObjects
+   * @instance
+   */
   moveLeft() {
     this.x -= this.speed;
   }
 
+  /**
+   * Applies gravity to the object.
+   * Every 30 milliseconds, the object's y-position is decreased by its speedY and its speedY is decreased by its acceleration.
+   * If the object is above the ground or its speedY is greater than 0, gravity is applied.
+   * @memberof MovableObjects
+   * @instance
+   */
   applyGravity() {
     setInterval(() => {
       if (this.isAboveGround() || this.speedY > 0) {
@@ -57,6 +81,16 @@ class MovableObjects extends DrawableObject {
     }, 1000 / 30);
   }
 
+  /**
+   * Check if the object is above the ground.
+   * This method is overridden by children classes.
+   * For the Character class, the object is above the ground if its y-position is less than 230.
+   * For the Bottle class, the object is above the ground if its y-position is less than 340.
+   * For the ThrowableObject class, the object is always above the ground.
+   * @returns {Boolean} True if the object is above the ground, false otherwise.
+   * @memberof MovableObjects
+   * @instance
+   */
   isAboveGround() {
     if (this instanceof ThrowableObject) {
       return true;
@@ -66,10 +100,22 @@ class MovableObjects extends DrawableObject {
     }
   }
 
+  /**
+   * Applies an upward force to the object, making it jump.
+   * Only applicable to objects that are not in the air.
+   * @memberof MovableObjects
+   * @instance
+   */
   jump() {
     this.speedY = 15;
   }
 
+  /**
+   * Play an animation once.
+   * @param {Array<string>} images Paths to the images of the animation.
+   * @memberof MovableObjects
+   * @instance
+   */
   playOnce(images) {
     this.currentImage = 0;
     const totalDuration = 100 * images.length;
@@ -84,6 +130,15 @@ class MovableObjects extends DrawableObject {
     }, totalDuration);
   }
 
+  /**
+   * Checks if this object is colliding with another MovableObject.
+   *
+   * This method compares the boundaries of the current object with the provided object
+   * to determine if they overlap, indicating a collision.
+   *
+   * @param {MovableObject} mo - The object to check for a collision.
+   * @returns {boolean} True if the objects are colliding, false otherwise.
+   */
   isColliding(mo) {
     return (
       this.x + this.width - this.offset.right > mo.x + mo.offset.left && // Rechte Kante der Flasche nach rechts
@@ -93,6 +148,15 @@ class MovableObjects extends DrawableObject {
     );
   }
 
+  /**
+   * Handles the character taking damage from an enemy.
+   * 
+   * Depending on the type of enemy, the character's energy is reduced by a certain amount.
+   * If the character's energy reaches 0, the character is killed.
+   * The timestamp of the last hit is updated.
+   * 
+   * @param {MovableObject} enemy - The enemy that the character is colliding with.
+   */
   hit(enemy) {
     if (enemy instanceof Chicken) {
       this.energy -= 10;
