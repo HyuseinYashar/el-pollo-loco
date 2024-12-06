@@ -15,9 +15,11 @@ body {
 
 .start_screen {
   background-image: url("img/9_intro_outro_screens/start/startscreen_1.png");
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  border-radius: 10px;
+  border: 1px solid;
   display: flex;
   justify-content: center;
   height: 421px;

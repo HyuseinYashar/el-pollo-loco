@@ -23,6 +23,7 @@ class ThrowableObject extends MovableObjects {
   };
   animateRotation;
   damaging;
+  bottle_drop = new Audio("audio/bottle_drop.mp3");
 
   constructor(x, y,z) {
     super();
@@ -60,10 +61,8 @@ class ThrowableObject extends MovableObjects {
 
   splash() {
     this.playAnimation(this.IMAGE_SPLASH);
+    this.bottle_drop.play();
     clearInterval(this.animateRotation);
     clearInterval(this.throwAnimation);
-    if(this.soundsOn){
-      this.bottle_drop.play();
-    }
   }
 }

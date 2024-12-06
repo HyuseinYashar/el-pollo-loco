@@ -6,8 +6,6 @@ class Coin extends MovableObjects{
         'img/8_coin/coin_2.png'
     ];
 
-    sound = new Audio();
-
     offset = {
         top: 0,
         bottom: 0,

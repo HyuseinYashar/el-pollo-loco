@@ -7,18 +7,12 @@ class MovableObjects extends DrawableObject {
   lasthit = 0;
   throwAnimation;
   dead;
-  walking_sound = new Audio("audio/walking.mp3");
-  jumping_sound = new Audio("audio/jumping.mp3");
-  bottle_drop = new Audio("audio/bottle_drop.mp3");
 
   boss_alert = new Audio("audio/boss_alert.mp3");
-  collecting_soud = new Audio("audio/collect.mp3");
   win_sound = new Audio("audio/win_sound.mp3");
   lose_sound = new Audio("audio/lose_sound.mp3");
   hurt_sound = new Audio("audio/hurt_sound.mp3");
-  snooring_sound = new Audio("audio/snooring.mp3");
-
-  soundsOn = false;
+  frag_sound = new Audio("audio/frag.mp3");
 
   clearAllInt() {
     for (let index = 0; index < 999; index++) {
@@ -44,24 +38,14 @@ class MovableObjects extends DrawableObject {
   }
 
   moveRight() {
-    this.walking_sound.pause();
-
     this.x += this.speed;
     if (this instanceof Character) {
       this.otherDirection = false;
     }
-    if (this.soundsOn && this instanceof Character) {
-      this.walking_sound.play();
-    }
   }
 
   moveLeft() {
-    this.walking_sound.pause();
-
     this.x -= this.speed;
-    if (this.soundsOn && this instanceof Character) {
-      this.walking_sound.play();
-    }
   }
 
   applyGravity() {
@@ -83,9 +67,6 @@ class MovableObjects extends DrawableObject {
   }
 
   jump() {
-    if (this.soundsOn) {
-      this.jumping_sound.play();
-    }
     this.speedY = 15;
   }
 

@@ -14,6 +14,7 @@ class World {
   ctx;
   keyboard;
   camera_x = 0;
+  gameOver = false;
 
   constructor(canvas, keyboard) {
     this.ctx = canvas.getContext("2d");
@@ -24,7 +25,7 @@ class World {
     this.run();
   }
 
-  run() {
+run() {
     setInterval(() => {
       this.checkCollisions();
       this.checkThrowObjects();
@@ -35,10 +36,8 @@ class World {
     }, 200);
   }
 
-  checkGame() {
-    const endboss = this.level.enemies.find(
-      (enemy) => enemy instanceof Endboss
-    );
+checkGame() {
+    let endboss = this.level.enemies.find((enemy) => enemy instanceof Endboss);
     if (endboss.isDead() && !this.character.isDead()) {
       setTimeout(() => {
         winScreen();
@@ -51,6 +50,7 @@ class World {
       }, 2000);
     }
   }
+
   checkForFallenBottle() {
     if (this.bottle.isOnTheGround()) {
       this.stopAndSplash();
@@ -88,6 +88,8 @@ class World {
   }
 
   draw() {
+    if (this.gameOver) return;
+
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
 
@@ -125,7 +127,6 @@ class World {
       this.flipImg(mo);
     }
     mo.draw(this.ctx);
-    // mo.drawFrame(this.ctx);
 
     if (mo.otherDirection) {
       this.flipImgBack(mo);
@@ -167,7 +168,7 @@ class World {
   collectingBottles() {
     this.level.bottles.forEach((bottle, i) => {
       if (this.character.isColliding(bottle)) {
-        if (this.character.amountOfBottles <= 50) {
+        if (this.character.amountOfBottles <= 100) {
           this.character.collectBottle();
           this.level.bottles.splice(i, 1);
           this.statusbarBottle.setPercentage(this.character.amountOfBottles);
@@ -180,6 +181,9 @@ class World {
     if (this.character.isColliding(enemy)) {
       if (!enemy.isDead() && !this.character.isAboveGround()) {
         this.character.hit(enemy);
+        if (this.soundsOn) {
+          this.character.hurt_sound.play();
+        }
         this.character.pauseMoving();
         this.statusbarHealth.setPercentage(this.character.energy);
       }
@@ -190,14 +194,20 @@ class World {
     if (this.characterJumpToKill(enemy)) {
       if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
         enemy.kill();
+        if (this.soundsOn) {
+          this.character.frag_sound.play();
+        }
         const indexOfEnemy = this.level.enemies.indexOf(enemy);
         setTimeout(() => {
           if (!(enemy instanceof Endboss)) {
-            this.level.enemies.splice(indexOfEnemy, 0);
+            this.level.enemies.splice(indexOfEnemy, 1);
           }
-        }, 500);
+        }, 200);
       } else {
         this.character.hit();
+        if (this.soundsOn) {
+          this.character.hurt_sound.play();
+        }
       }
     }
   }
@@ -212,7 +222,7 @@ class World {
         if (this.bottle.damaging) {
           enemy.kill();
         }
-        this.stopAndSplash();
+        // this.stopAndSplash();
         const indexOfEnemy = this.level.enemies.indexOf(enemy);
         setTimeout(() => {
           this.level.enemies.splice(indexOfEnemy, 1);
@@ -222,7 +232,11 @@ class World {
         if (this.bottle.damaging) {
           enemy.hit();
         }
-        this.stopAndSplash();
+        // this.stopAndSplash();
+      }
+      this.stopAndSplash();
+      if (this.soundsOn) {
+        this.bottle.bottle_drop.play();
       }
     }
   }

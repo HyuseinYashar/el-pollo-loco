@@ -1,3 +1,9 @@
+/**
+ * Sets the display property of an element to either "flex" or "none" to show
+ * or hide it.
+ * @param {string} elementId - The id of the element to be shown or hidden.
+ * @param {boolean} show - If false, the element will be hidden, otherwise it will be shown.
+ */
 function toggleDisplay(elementId, show) {
   const displayStyle = show ? "flex" : "none";
   document.getElementById(elementId).style.display = displayStyle;
@@ -11,9 +17,9 @@ function gameOver() {
 }
 
 function clearAllIntervals() {
-    for (let i = 1; i < 9999; i++) {
-        clearInterval(i);
-    }
+  for (let i = 1; i < 9999; i++) {
+    clearInterval(i);
+  }
 }
 
 function winScreen() {
@@ -50,7 +56,9 @@ function goToStartMenu() {
   toggleDisplay("canvas", false);
   toggleDisplay("win", false);
   toggleDisplay("instruction2", true);
+  toggleDisplay("soundid", true);
   toggleDisplay("policyid", true);
+  endGame();
 }
 
 function checkOrientation() {

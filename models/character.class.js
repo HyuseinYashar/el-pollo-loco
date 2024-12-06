@@ -12,6 +12,10 @@ class Character extends MovableObjects {
   statusInt;
   moveInt;
 
+  walking_sound = new Audio("audio/walking.mp3");
+  collecting_soud = new Audio("audio/collect.mp3");
+  snooring_sound = new Audio("audio/snooring.mp3");
+
   offset = {
     top: 50,
     bottom: 10,
@@ -97,7 +101,6 @@ class Character extends MovableObjects {
   moveLeft() {
     this.x -= this.speed;
     this.otherDirection = true;
-    // this.walking_sound.play();
   }
 
   idleAnimate() {
@@ -138,10 +141,12 @@ class Character extends MovableObjects {
       ) {
         this.moveRight();
         this.lastMove = new Date().getTime();
+        this.walking_sound.play();
       }
 
       if (this.world.keyboard.LEFT && this.x > 0 && !this.isDead()) {
         this.moveLeft();
+        this.walking_sound.play();
         this.lastMove = new Date().getTime();
       }
 
@@ -158,23 +163,25 @@ class Character extends MovableObjects {
   }
 
   idle() {
-    this.snooring_sound.pause();
     this.playAnimation(this.IMAGES_IDLE);
-    if(this.soundsOn){
-
-    }
+    this.walking_sound.pause();
   }
 
   longIdle() {
     this.playAnimation(this.IMAGES_LONG_IDLE);
-    if(this.soundsOn){
-      this.snooring_sound.play();
+    this.snooring_sound.play();
+    try {
+      this.walking_sound.pause();
+    } catch (e) {
+      console.log(e);
+      
     }
   }
 
   hurting() {
     this.speed = 0;
     this.playAnimation(this.IMAGES_HURT);
+    this.hurt_sound.play();
     setTimeout(() => {
       this.speed = 10;
     }, 1000);
@@ -192,6 +199,8 @@ class Character extends MovableObjects {
       }
     }, 500);
     this.lose_sound.play();
+    this.walking_sound.pause();
+    this.snooring_sound.pause();
     setTimeout(() => {
       gameOver();
     }, 1500);
@@ -199,6 +208,8 @@ class Character extends MovableObjects {
 
   jumping() {
     this.playAnimation(this.IMAGES_JUMPING);
+    this.walking_sound.pause();
+
   }
 
   walking() {
@@ -211,21 +222,17 @@ class Character extends MovableObjects {
 
   collectCoin() {
     this.amountOfCoins += 10;
+    this.collecting_soud.play()
     if (this.amountOfCoins > 100) {
       this.amountOfCoins = 100;
-    }
-    if (this.soundsOn) {
-      this.collecting_soud.play();
     }
   }
 
   collectBottle() {
     this.amountOfBottles += 20;
+    this.collecting_soud.play()
     if (this.amountOfBottles > 100) {
       this.amountOfBottles = 100;
-    }
-    if (this.soundsOn) {
-      this.collecting_soud.play();
     }
   }
 }
