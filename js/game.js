@@ -3,8 +3,7 @@ let world;
 let keyboard = new Keyboard();
 let soundMuted = false;
 const originalPlay = Audio.prototype.play;
-let bg_music = new Audio('audio/bg_music.mp3');
-
+let bg_music = new Audio("audio/bg_music.mp3");
 
 /**
  * Initializes the game by setting up mobile controls and getting references to the HTML canvas
@@ -74,7 +73,9 @@ Audio.prototype.play = function () {
  */
 function endGame() {
   world.gameOver = true;
-  bg_music.pause();
+  try {
+    bg_music.pause();
+  } catch (error) {}
   clearAllIntervals();
   // startGame();
 }
@@ -104,7 +105,9 @@ function mute() {
  */
 function initBody() {
   document.getElementById("canvas").style.display = "none";
-  bg_music.pause();
+  try {
+    bg_music.pause();
+  } catch (error) {}
   soundMuted = JSON.parse(localStorage.getItem("soundMuted")) || false;
   const soundIcon = document.getElementById("soundid");
   if (soundMuted) {

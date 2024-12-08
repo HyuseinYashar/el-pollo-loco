@@ -18,6 +18,12 @@ class Bottle extends MovableObjects {
     right: 5,
   };
 
+  /**
+   * Create a new bottle instance.
+   * @param {number} x - The initial x position of the bottle.
+   * @param {number} y - The initial y position of the bottle, which is ignored
+   *                     and set to 0.
+   */
   constructor(x, y) {
     super();
     this.x = x;

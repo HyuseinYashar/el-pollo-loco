@@ -6,6 +6,13 @@ class Keyboard {
   DOWN = false;
   D = false;
 
+  /**
+   * Attaches event listeners for the mobile controls.
+   *
+   * Listens for touch events on the left, right, jump and throw buttons.
+   * Sets the corresponding properties of the Keyboard instance to true
+   * when the button is touched and false when the touch is released.
+   */
   mobileControl() {
     document.getElementById("leftbtn").addEventListener(
       "touchstart",

@@ -3,6 +3,18 @@ initLevel();
 
 
 
+/**
+ * Initializes the level by creating a new Level object with enemies, clouds, background objects, coins, and bottles.
+ *
+ * The Level object is created with the following parameters:
+ * - enemies: An array of 16 enemies, including 12 chickens, 3 small chickens, and 1 end boss.
+ * - clouds: An array of 2 clouds.
+ * - backgroundObjects: An array of 12 background objects, including 4 layers of background objects.
+ * - coins: An array of 10 coins positioned at various locations on the screen.
+ * - bottles: An array of 10 bottles positioned at various locations on the screen.
+ *
+ * The level is initialized by calling this function once at the beginning of the game.
+ */
 function initLevel() {
    level1 = new Level(
     [

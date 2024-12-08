@@ -84,6 +84,14 @@ class Character extends MovableObjects {
     "img/2_character_pepe/4_hurt/H-43.png",
   ];
 
+  /**
+   * Initializes the Character object by loading images for various states and
+   * setting up gravity and animations.
+   *
+   * Loads the initial idle image and preloads images for walking, jumping, hurt,
+   * dead, idle, and long idle states. Applies gravity to the character and
+   * starts idle animation, general animation, and movement.
+   */
   constructor() {
     super().loadImg("img/2_character_pepe/1_idle/idle/I-1.png");
     this.loadImages(this.IMAGES_WALKING);
@@ -98,11 +106,27 @@ class Character extends MovableObjects {
     this.move();
   }
 
+  /**
+   * Move the character to the left.
+   * @memberof Character
+   * @instance
+   */
   moveLeft() {
     this.x -= this.speed;
     this.otherDirection = true;
   }
 
+  /**
+   * Animates the character's various states.
+   *
+   * This function sets up an interval to check the character's state every 100
+   * milliseconds. Based on the state, it will play the corresponding animation.
+   *
+   * If the character is dead, it will play the death animation.
+   * If the character is hurt, it will play the hurt animation.
+   * If the character is idle for more than 6 seconds, it will play the long idle animation.
+   * Otherwise, it will play the idle animation.
+   */
   idleAnimate() {
     setInterval(() => {
       let timepassed = new Date().getTime() - this.lastMove;
@@ -117,6 +141,17 @@ class Character extends MovableObjects {
     }, 100);
   }
 
+  /**
+   * Animates the character's various states.
+   *
+   * This function sets up an interval to check the character's state every 100
+   * milliseconds. Based on the state, it will play the corresponding animation.
+   *
+   * If the character is hurt, it will play the hurt animation.
+   * If the character is above the ground, it will play the jumping animation.
+   * If the character is not hurt and is not above the ground and the left or right key is pressed,
+   * it will play the walking animation and update the last move time.
+   */
   animateInt() {
     setInterval(() => {
       if (this.isHurt(this)) {
@@ -131,32 +166,29 @@ class Character extends MovableObjects {
       }
     }, 100);
   }
+  /**
+   * Updates the character's movement based on the current keyboard state.
+   *
+   * This method is called every 33 milliseconds (30 times per second) and checks
+   * the state of the keyboard. If a key is pressed, it calls the corresponding
+   * method to update the character's position. The last move time is also updated
+   * to ensure that the character's idle animation is triggered after a certain
+   * amount of time.
+   *
+   * Additionally, the camera's x position is updated to follow the character.
+   */
   move() {
     setInterval(() => {
-
-      if (
-        this.world.keyboard.RIGHT &&
-        this.x < this.world.level.level_end_x + 100 &&
-        !this.isDead()
-      ) {
-        this.moveRight();
-        this.lastMove = new Date().getTime();
-        this.walking_sound.play();
-      }
-
-      if (this.world.keyboard.LEFT && this.x > 0 && !this.isDead()) {
-        this.moveLeft();
-        this.walking_sound.play();
-        this.lastMove = new Date().getTime();
-      }
-
-      if (
-        this.world.keyboard.SPACE &&
-        !this.isAboveGround(this.y) &&
-        !this.isDead()
-      ) {
-        this.jump();
-        this.lastMove = new Date().getTime();
+      const { RIGHT, LEFT, SPACE } = this.world.keyboard;
+      if (!this.isDead()) {
+        if (RIGHT && this.x < this.world.level.level_end_x + 100)
+          this.moveRight();
+        if (LEFT && this.x > 0) this.moveLeft();
+        if (SPACE && !this.isAboveGround(this.y)) this.jump();
+        if (RIGHT || LEFT || SPACE) {
+          this.lastMove = Date.now();
+          this.walking_sound.play();
+        }
       }
       this.world.camera_x = -this.x + 200;
     }, 1000 / 30);
@@ -164,8 +196,10 @@ class Character extends MovableObjects {
 
   idle() {
     this.playAnimation(this.IMAGES_IDLE);
-    this.walking_sound.pause();
-    this.snooring_sound.pause();
+    try {
+      this.walking_sound.pause();
+      this.snooring_sound.pause();
+    } catch (error) {}
   }
 
   longIdle() {
@@ -173,9 +207,7 @@ class Character extends MovableObjects {
     this.snooring_sound.play();
     try {
       this.walking_sound.pause();
-    } catch (e) {
-      console.log(e);
-    }
+    } catch (error) {}
   }
 
   hurting() {
@@ -199,38 +231,66 @@ class Character extends MovableObjects {
       }
     }, 500);
     this.lose_sound.play();
-    this.walking_sound.pause();
-    this.snooring_sound.pause();
+    try {
+      this.walking_sound.pause();
+      this.snooring_sound.pause();
+    } catch (error) {}
     setTimeout(() => {
       gameOver();
     }, 1500);
   }
 
+  /**
+   * Plays the jumping animation for the character.
+   *
+   * This method pauses the walking sound as well.
+   */
   jumping() {
     this.playAnimation(this.IMAGES_JUMPING);
-    this.walking_sound.pause();
-
+    try {
+      this.walking_sound.pause();
+    } catch (error) {}
   }
 
+  /**
+   * Plays the walking animation for the character.
+   *
+   * This method is typically called when the character is moving
+   * left or right and the corresponding key is pressed.
+   */
   walking() {
     this.playAnimation(this.IMAGES_WALKING);
   }
 
+  /**
+   * Sets the character's movement speed to 0, effectively pausing
+   * its movement.
+   */
   pauseMoving() {
     this.speed = 0;
   }
 
+  /**
+   * Increases the character's amount of coins by 10 and plays the coin collecting sound.
+   *
+   * If the total amount of coins exceeds 100 after collecting, it is capped at 100.
+   */
   collectCoin() {
     this.amountOfCoins += 10;
-    this.collecting_soud.play()
+    this.collecting_soud.play();
     if (this.amountOfCoins > 100) {
       this.amountOfCoins = 100;
     }
   }
 
+  /**
+   * Increases the character's amount of bottles by 20 and plays the bottle collecting sound.
+   *
+   * If the total amount of bottles exceeds 100 after collecting, it is capped at 100.
+   */
   collectBottle() {
     this.amountOfBottles += 20;
-    this.collecting_soud.play()
+    this.collecting_soud.play();
     if (this.amountOfBottles > 100) {
       this.amountOfBottles = 100;
     }

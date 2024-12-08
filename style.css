@@ -2,6 +2,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   font-family: "AbrilFatface-Regular";
   background-image: url("img/9_intro_outro_screens/start/bg_desert.jpg");
   background-size: cover;

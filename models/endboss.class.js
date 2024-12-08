@@ -61,6 +61,14 @@ class Endboss extends MovableObjects {
     left: 0,
     right: 0,
   };
+  /**
+   * Initializes the Endboss object by loading images for various states and
+   * starting its animations and movement.
+   * 
+   * Loads the initial walking image and preloads images for walking, alert,
+   * attack, hurt, and dead states. Begins the Endboss walking left and
+   * animating.
+   */
   constructor() {
     super();
     this.loadImg(this.IMAGES_WALKING[0]);
@@ -73,6 +81,14 @@ class Endboss extends MovableObjects {
     this.animate(); // animating the object
   }
 
+/**
+ * Initiates the movement of the Endboss to the left.
+ *
+ * If the Endboss is not dead, this function sets up an interval
+ * to repeatedly call the moveLeft function every 200 milliseconds.
+ * This interval is stored in the moveleftInt property for potential
+ * later use (e.g., clearing the interval).
+ */
   walkLeft() {
     if (!this.isDead()) {
       this.moveleftInt = setInterval(() => {
@@ -81,15 +97,28 @@ class Endboss extends MovableObjects {
     }
   }
 
+  /**
+   * Animates the Endboss' various states.
+   *
+   * This function sets up an interval to check the Endboss' state every 200
+   * milliseconds. Based on the state, it will play the corresponding animation.
+   *
+   * If the Endboss is dead, it will play the death animation.
+   * If the Endboss is hurt, it will play the hurt animation.
+   * If the Endboss' energy is between 40 and 80, it will play the attack animation.
+   * Otherwise, it will play the walking animation.
+   *
+   * This interval is stored in the animateInt property for potential later use
+   * (e.g., clearing the interval).
+   */
   animate() {
     this.animateInt = setInterval(() => {
       if (this.isDead()) {
-        // clearInterval(this.moveleftInt);
         this.playdie();
       } else if (this.isHurt()) {
         this.speed = 0;
         this.playHurt();
-      } else if(this.energy>=40 && this.energy<=80){
+      } else if(this.energy>=20 && this.energy<=80){
         this.playAttack();
       } else {
         this.playAnimation(this.IMAGES_WALKING);
@@ -97,8 +126,14 @@ class Endboss extends MovableObjects {
     }, 200);
   }
 
+/**
+ * Plays the attack animation and increases the speed of the Endboss.
+ *
+ * This method sets the Endboss's speed to 7 and plays the attack animation
+ * along with the alert sound. After 3 seconds, the speed is reset to 1.
+ */
   playAttack(){
-    this.speed  = 5
+    this.speed  = 7
     this.playAnimation(this.IMAGES_ATTACK)
     this.boss_alert.play()
     setTimeout(() => {
@@ -106,6 +141,11 @@ class Endboss extends MovableObjects {
     }, 3000);
   }
 
+  /**
+   * Reduces the Endboss's energy by 20 and sets the last hit time to the current time.
+   *
+   * If the Endboss's energy is less than 0, it is set to 0.
+   */
   hit() {
     this.energy -= 20;
     if (this.energy < 0) {
@@ -114,6 +154,13 @@ class Endboss extends MovableObjects {
     this.lasthit = new Date().getTime();
   }
 
+  /**
+   * Checks if the Endboss is dead.
+   *
+   * The Endboss is considered dead if its energy is 0.
+   *
+   * @returns {Boolean} True if the Endboss is dead, false otherwise.
+   */
   isDead() {
     return this.energy == 0;
   }
@@ -124,11 +171,22 @@ class Endboss extends MovableObjects {
 
   animateInt;
 
+  /**
+   * Plays the Endboss's hurt animation and sets its speed to 1.
+   *
+   * The hurt animation is played once, and the Endboss's speed is set to 1 to slow it down.
+   */
   playHurt() {
     this.playOnce(this.IMAGES_HURT);
     this.speed = 1;
   }
 
+  /**
+   * Plays the Endboss's die animation, stops it from moving and plays the win sound.
+   *
+   * The Endboss's die animation is played once, and its speed is set to 0 to stop it from moving.
+   * The win sound is played, and the Endboss is moved off the screen after a 1500 millisecond delay.
+   */
   playdie() {
     this.speed = 0;
     this.playOnce(this.IMAGES_DEAD);
@@ -138,6 +196,12 @@ class Endboss extends MovableObjects {
     }, 1500);
   }
 
+  /**
+   * Checks if the Endboss is hurt.
+   *
+   * The Endboss is hurt if the time since it was last hit is less than 500 milliseconds.
+   * @returns {Boolean} True if the Endboss is hurt, false otherwise.
+   */
   isHurt() {
     let timepassed = new Date().getTime() - this.lasthit;
     return timepassed < 500;

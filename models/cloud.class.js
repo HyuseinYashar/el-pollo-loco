@@ -5,6 +5,10 @@ class Cloud extends MovableObjects {
     x = Math.random() * 500;
     y = 1;
     
+    /**
+     * Constructs a new Cloud instance.
+     * @param {string} imgPath - Path to the cloud image.
+     */
     constructor(imgPath){
         super().loadImg(imgPath);
         this.animate();

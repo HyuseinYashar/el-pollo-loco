@@ -11,10 +11,10 @@ class SmallChicken extends MovableObjects {
   IMAGES_DEAD = ["img/3_enemies_chicken/chicken_small/2_dead/dead.png"];
 
   offset = {
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    top: 10,
+    bottom: 10,
+    left: 15,
+    right: 15,
   };
   /**
    * Class constructor
@@ -52,4 +52,17 @@ class SmallChicken extends MovableObjects {
   isDead() {
     return this.dead;
   }
+
+    /**
+   * Kill the chicken.
+   * 
+   * This method will stop the chicken's movement and set the chicken's
+   * dead flag to true.
+   * 
+   * @author Johannes Konert
+   */
+    kill() {
+      this.speed = 0;
+      this.dead = true;
+    }
 }

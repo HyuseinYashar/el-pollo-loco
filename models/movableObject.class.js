@@ -101,6 +101,19 @@ class MovableObjects extends DrawableObject {
   }
 
   /**
+   * Checks if this object is positioned above the given enemy.
+   * 
+   * Compares the y-coordinate of this object with the y-coordinate of the enemy
+   * to determine if this object is above the enemy.
+   *
+   * @param {MovableObject} enemy - The enemy to compare against.
+   * @returns {boolean} True if this object is above the enemy, false otherwise.
+   */
+  isAboveEnemy(enemy){    
+    return this.y < enemy.y;
+  }
+
+  /**
    * Applies an upward force to the object, making it jump.
    * Only applicable to objects that are not in the air.
    * @memberof MovableObjects
@@ -173,10 +186,7 @@ class MovableObjects extends DrawableObject {
       this.lasthit = new Date().getTime();
     }
   }
-  kill() {
-    this.speed = 0;
-    this.dead = true;
-  }
+
 
   isDead() {
     return this.energy == 0;
