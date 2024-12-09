@@ -75,7 +75,8 @@ function endGame() {
   world.gameOver = true;
   try {
     bg_music.pause();
-  } catch (error) {}
+  } catch (error) {console.log(error);
+  }
   clearAllIntervals();
   // startGame();
 }
@@ -107,7 +108,8 @@ function initBody() {
   document.getElementById("canvas").style.display = "none";
   try {
     bg_music.pause();
-  } catch (error) {}
+  } catch (error) {console.log(error);
+  }
   soundMuted = JSON.parse(localStorage.getItem("soundMuted")) || false;
   const soundIcon = document.getElementById("soundid");
   if (soundMuted) {

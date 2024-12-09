@@ -49,7 +49,7 @@ class World {
       this.collectingBottles();
       this.checkForFallenBottle();
       this.checkGame();
-    }, 200);
+    }, 300);
   }
 
   /**
@@ -155,28 +155,19 @@ class World {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
 
-    this.addObjectsToMap(this.level.backgroundObjects);
-    this.addObjectsToMap(this.level.clouds);
-    this.addToMap(this.character);
-    this.addObjectsToMap(this.enemies);
-    this.addObjectsToMap(this.throwableObjects);
-    this.addObjectsToMap(this.level.coins);
-    this.addObjectsToMap(this.level.bottles);
-    this.addToMap(this.bottle);
+    [
+        this.level.backgroundObjects, this.level.clouds, [this.character],
+        this.enemies, this.throwableObjects, this.level.coins,
+        this.level.bottles, [this.bottle]
+    ].forEach(objects => this.addObjectsToMap(objects));
 
     this.ctx.translate(-this.camera_x, 0);
-    this.addToMap(this.statusbarHealth);
-    this.addToMap(this.statusbarBottle);
-    this.addToMap(this.statusbarCoin);
-    this.addToMap(this.endbossBar);
-    this.ctx.translate(this.camera_x, 0);
+    [this.statusbarHealth, this.statusbarBottle, this.statusbarCoin, this.endbossBar]
+        .forEach(bar => this.addToMap(bar));
 
-    this.ctx.translate(-this.camera_x, 0);
-    let self = this;
-    requestAnimationFrame(() => {
-      self.draw();
-    });
-  }
+    requestAnimationFrame(() => this.draw());
+}
+
 
   /**
    * Iterates over an array of objects and calls the addToMap method for each one.
@@ -295,8 +286,6 @@ class World {
     if (this.character.isColliding(enemy)) {
       if (!enemy.isDead() && !this.character.isAboveGround()) {
         this.character.hit(enemy);
-        this.character.hurt_sound.play();
-        this.character.pauseMoving();
         this.statusbarHealth.setPercentage(this.character.energy);
       }
     }
@@ -315,17 +304,17 @@ class World {
     if (this.characterJumpToKill(enemy)) {
       if (enemy instanceof Chicken || enemy instanceof SmallChicken) {
         enemy.kill();
+        this.character.frag_sound.volume = 0.01;
         this.character.frag_sound.play();
         setTimeout(() => {
           if (!(enemy instanceof Endboss)) {
-              this.level.enemies = this.level.enemies.filter(e => e !== enemy);
+            this.level.enemies = this.level.enemies.filter((e) => e !== enemy);
           }
-      }, 200);
+        }, 200);
       } else {
         this.character.hit();
-        if (this.soundsOn) {
-          this.character.hurt_sound.play();
-        }
+        this.character.hurt_sound.volume = 0.005;
+        this.character.hurt_sound.play();
       }
     }
   }
@@ -337,7 +326,11 @@ class World {
    * @returns {Boolean} True if the character is above ground and colliding with the enemy, false otherwise.
    */
   characterJumpToKill(enemy) {
-    return this.character.isColliding(enemy) && this.character.isAboveEnemy(enemy) && this.character.isAboveGround();
+    return (
+      this.character.isColliding(enemy) &&
+      this.character.isAboveEnemy(enemy) &&
+      this.character.isAboveGround()
+    );
   }
 
   /**
@@ -357,15 +350,15 @@ class World {
       if (this.bottle.damaging) enemy.kill();
       setTimeout(() => {
         if (!(enemy instanceof Endboss)) {
-            this.level.enemies = this.level.enemies.filter(e => e !== enemy);
+          this.level.enemies = this.level.enemies.filter((e) => e !== enemy);
         }
-    }, 300);
+      }, 300);
     } else if (enemy instanceof Endboss) {
       if (this.bottle.damaging) enemy.hit();
       this.endbossBar.setPercentage(enemy.energy);
     }
-
     this.stopAndSplash();
+    this.bottle.bottle_drop.volume = 0.01;
     this.bottle.bottle_drop.play();
   }
 }

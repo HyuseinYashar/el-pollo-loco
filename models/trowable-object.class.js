@@ -89,7 +89,9 @@ class ThrowableObject extends MovableObjects {
    */
   splash() {
     this.playAnimation(this.IMAGE_SPLASH);
+    this.bottle_drop.volume = 0.01;
     this.bottle_drop.play();
+
     clearInterval(this.animateRotation);
     clearInterval(this.throwAnimation);
   }

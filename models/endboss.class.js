@@ -135,7 +135,9 @@ class Endboss extends MovableObjects {
   playAttack(){
     this.speed  = 7
     this.playAnimation(this.IMAGES_ATTACK)
+    this.boss_alert.volume = 0.01;
     this.boss_alert.play()
+
     setTimeout(() => {
       this.speed = 1  
     }, 3000);
@@ -190,7 +192,9 @@ class Endboss extends MovableObjects {
   playdie() {
     this.speed = 0;
     this.playOnce(this.IMAGES_DEAD);
+    this.win_sound.volume = 0.05;
     this.win_sound.play();
+
     setTimeout(() => {
       this.y = -1000;
     }, 1500);

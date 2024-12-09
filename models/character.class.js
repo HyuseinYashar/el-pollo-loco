@@ -187,6 +187,7 @@ class Character extends MovableObjects {
         if (SPACE && !this.isAboveGround(this.y)) this.jump();
         if (RIGHT || LEFT || SPACE) {
           this.lastMove = Date.now();
+          this.walking_sound.volume = 0.01;
           this.walking_sound.play();
         }
       }
@@ -194,29 +195,51 @@ class Character extends MovableObjects {
     }, 1000 / 30);
   }
 
+  /**
+   * Animates the character's idle state.
+   *
+   * This function sets the character's animation to the idle animation.
+   * It also attempts to pause the walking and snooring sounds, if they are playing.
+   * If the sounds are not playing, it sets their volume to 0 and plays and pauses them,
+   * which is a workaround to prevent errors when calling pause() on a sound that is not playing.
+   */
   idle() {
     this.playAnimation(this.IMAGES_IDLE);
     try {
       this.walking_sound.pause();
       this.snooring_sound.pause();
-    } catch (error) {}
+    } catch (error) {
+      this.snooring_sound.volume = 0;
+      this.walking_sound.volume = 0;
+
+      this.walking_sound.play();
+      this.snooring_sound.play();
+      this.walking_sound.pause();
+      this.snooring_sound.pause();
+      // console.log(error);
+    }
   }
 
   longIdle() {
     this.playAnimation(this.IMAGES_LONG_IDLE);
     this.snooring_sound.play();
+    this.snooring_sound.volume = 0.01;
+
     try {
       this.walking_sound.pause();
-    } catch (error) {}
+    } catch (error) {
+      this.walking_sound.volume = 0;
+      this.walking_sound.play();
+      this.walking_sound.pause();
+
+      // console.log(error);
+    }
   }
 
   hurting() {
-    this.speed = 0;
     this.playAnimation(this.IMAGES_HURT);
+    this.hurt_sound.volume = 0.005;
     this.hurt_sound.play();
-    setTimeout(() => {
-      this.speed = 10;
-    }, 1000);
   }
 
   pepeDied() {
@@ -230,11 +253,20 @@ class Character extends MovableObjects {
         }, 550);
       }
     }, 500);
+    this.lose_sound.volume = 0.05;
     this.lose_sound.play();
     try {
       this.walking_sound.pause();
       this.snooring_sound.pause();
-    } catch (error) {}
+    } catch (error) {
+      this.walking_sound.volume = 0;
+      this.snooring_sound.volume = 0;
+      this.walking_sound.play();
+      this.snooring_sound.play();
+      this.walking_sound.pause();
+      this.snooring_sound.pause();
+      // console.log(error);
+    }
     setTimeout(() => {
       gameOver();
     }, 1500);
@@ -249,7 +281,12 @@ class Character extends MovableObjects {
     this.playAnimation(this.IMAGES_JUMPING);
     try {
       this.walking_sound.pause();
-    } catch (error) {}
+    } catch (error) {
+      this.walking_sound.volume = 0();
+      this.walking_sound.play();
+      this.walking_sound.pause();
+      // console.log(error);
+    }
   }
 
   /**
@@ -277,7 +314,9 @@ class Character extends MovableObjects {
    */
   collectCoin() {
     this.amountOfCoins += 10;
+    this.collecting_soud.volume = 0.01;
     this.collecting_soud.play();
+
     if (this.amountOfCoins > 100) {
       this.amountOfCoins = 100;
     }
@@ -290,7 +329,9 @@ class Character extends MovableObjects {
    */
   collectBottle() {
     this.amountOfBottles += 20;
+    this.collecting_soud.volume = 0.01;
     this.collecting_soud.play();
+
     if (this.amountOfBottles > 100) {
       this.amountOfBottles = 100;
     }

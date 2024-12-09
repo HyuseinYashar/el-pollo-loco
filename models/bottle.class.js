@@ -27,8 +27,7 @@ class Bottle extends MovableObjects {
   constructor(x, y) {
     super();
     this.x = x;
-    this.y = 0;
+    this.y = y;
     this.loadImg(this.BOTTLE_IMAGE);
-    this.applyGravity();
   }
 }

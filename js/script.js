@@ -59,7 +59,7 @@ function startGame() {
   toggleDisplay("instruction2", false);
   toggleDisplay("policyid", false);
   bg_music.loop = true;
-  bg_music.volume = 0.1;
+  bg_music.volume = 0.01;
   bg_music.play();
 }
 
