@@ -93,7 +93,9 @@ class DrawableObject {
           this instanceof Chicken ||
           this instanceof SmallChicken ||
           this instanceof Endboss ||
-          this instanceof ThrowableObject
+          this instanceof ThrowableObject||
+          this instanceof Bottle||
+          this instanceof Coin
         ) {
     
           // Zeichnet den Offset-Rahmen, wenn Offset definiert ist

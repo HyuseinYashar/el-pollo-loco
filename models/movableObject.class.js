@@ -102,14 +102,14 @@ class MovableObjects extends DrawableObject {
 
   /**
    * Checks if this object is positioned above the given enemy.
-   * 
+   *
    * Compares the y-coordinate of this object with the y-coordinate of the enemy
    * to determine if this object is above the enemy.
    *
    * @param {MovableObject} enemy - The enemy to compare against.
    * @returns {boolean} True if this object is above the enemy, false otherwise.
    */
-  isAboveEnemy(enemy){    
+  isAboveEnemy(enemy) {
     return this.y < enemy.y;
   }
 
@@ -161,13 +161,25 @@ class MovableObjects extends DrawableObject {
     );
   }
 
+  isCollidingFromTop(mo) {
+    return (
+      // Vertikale Bedingung: "this" befindet sich oberhalb von "mo"
+      (this.y + this.height - this.offset.bottom) >= (mo.y + mo.offset.top) && // Untere Kante von "this" ist mindestens auf Höhe der oberen Kante von "mo"
+      (this.y + this.height - this.offset.bottom) <= (mo.y + mo.offset.top) + (mo.height / 10) && // Und nicht weit darunter (z. B. max. 10% der Höhe von "mo")
+  
+      // Horizontale Überlappung: Kanten überlappen sich
+      (this.x + this.width - this.offset.right) > (mo.x + mo.offset.left) && // Rechte Kante von "this" ist rechts der linken Kante von "mo"
+      (this.x + this.offset.left) < (mo.x + mo.width) - (mo.offset.right) // Linke Kante von "this" ist links der rechten Kante von "mo"
+    );
+  }
+
   /**
    * Handles the character taking damage from an enemy.
-   * 
+   *
    * Depending on the type of enemy, the character's energy is reduced by a certain amount.
    * If the character's energy reaches 0, the character is killed.
    * The timestamp of the last hit is updated.
-   * 
+   *
    * @param {MovableObject} enemy - The enemy that the character is colliding with.
    */
   hit(enemy) {
@@ -182,11 +194,9 @@ class MovableObjects extends DrawableObject {
     }
     if (this.energy < 0) {
       this.energy = 0;
-    } else {
-      this.lasthit = new Date().getTime();
     }
+    this.lasthit = new Date().getTime();
   }
-
 
   isDead() {
     return this.energy == 0;

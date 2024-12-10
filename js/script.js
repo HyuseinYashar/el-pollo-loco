@@ -1,3 +1,4 @@
+let bgMusicPause;
 /**
  * Sets the display property of an element to either "flex" or "none" to show
  * or hide it.
@@ -17,7 +18,7 @@ function gameOver() {
   toggleDisplay("canvas", false);
   toggleDisplay("gameover", true);
   clearAllIntervals();
-  bg_music.pause();
+  if(bgMusicPause != undefined)     bg_music.pause();
 }
 
 /**
@@ -42,7 +43,8 @@ function winScreen() {
   toggleDisplay("canvas", false);
   toggleDisplay("win", true);
   toggleDisplay("startscreen", false);
-  bg_music.pause();
+  clearAllIntervals();
+  if(bgMusicPause != undefined)     bg_music.pause();
 }
 
 /**
@@ -60,7 +62,7 @@ function startGame() {
   toggleDisplay("policyid", false);
   bg_music.loop = true;
   bg_music.volume = 0.01;
-  bg_music.play();
+  bgMusicPause = bg_music.play();
 }
 
 /**

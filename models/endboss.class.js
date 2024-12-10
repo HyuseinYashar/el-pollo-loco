@@ -58,9 +58,10 @@ class Endboss extends MovableObjects {
   offset = {
     top: 60,
     bottom: 20,
-    left: 0,
-    right: 0,
+    left: 20,
+    right: 20,
   };
+  a;
   /**
    * Initializes the Endboss object by loading images for various states and
    * starting its animations and movement.
@@ -136,11 +137,7 @@ class Endboss extends MovableObjects {
     this.speed  = 7
     this.playAnimation(this.IMAGES_ATTACK)
     this.boss_alert.volume = 0.01;
-    this.boss_alert.play()
-
-    setTimeout(() => {
-      this.speed = 1  
-    }, 3000);
+    this.a = this.boss_alert.play();
   }
 
   /**

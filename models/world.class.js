@@ -49,7 +49,7 @@ class World {
       this.collectingBottles();
       this.checkForFallenBottle();
       this.checkGame();
-    }, 300);
+    }, 150);
   }
 
   /**
@@ -192,6 +192,7 @@ class World {
       this.flipImg(mo);
     }
     mo.draw(this.ctx);
+    mo.drawFrame(this.ctx);
     if (mo.otherDirection) {
       this.flipImgBack(mo);
     }
@@ -326,12 +327,15 @@ class World {
    * @returns {Boolean} True if the character is above ground and colliding with the enemy, false otherwise.
    */
   characterJumpToKill(enemy) {
-    return (
-      this.character.isColliding(enemy) &&
-      this.character.isAboveEnemy(enemy) &&
-      this.character.isAboveGround()
-    );
+    return this.character.isCollidingFromTop(enemy);
+    // return (
+    //   this.character.isColliding(enemy) &&
+    //   this.character.isAboveEnemy(enemy) &&
+    //   this.character.isAboveGround()
+    // );
   }
+
+
 
   /**
    * Handles the collision between a throwable bottle and an enemy.

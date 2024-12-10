@@ -16,11 +16,14 @@ class Character extends MovableObjects {
   collecting_soud = new Audio("audio/collect.mp3");
   snooring_sound = new Audio("audio/snooring.mp3");
 
+  walkingPause;
+  snooringPause; 
+
   offset = {
-    top: 50,
+    top: 100,
     bottom: 10,
-    left: 10,
-    right: 10,
+    left: 30,
+    right: 30,
   };
 
   IMAGES_IDLE = [
@@ -188,7 +191,7 @@ class Character extends MovableObjects {
         if (RIGHT || LEFT || SPACE) {
           this.lastMove = Date.now();
           this.walking_sound.volume = 0.01;
-          this.walking_sound.play();
+          this.walkingPause =  this.walking_sound.play();
         }
       }
       this.world.camera_x = -this.x + 200;
@@ -205,34 +208,20 @@ class Character extends MovableObjects {
    */
   idle() {
     this.playAnimation(this.IMAGES_IDLE);
-    try {
+    if(this.walkingPause != undefined) {
       this.walking_sound.pause();
+    }
+    if(this.snooringPause != undefined) {
       this.snooring_sound.pause();
-    } catch (error) {
-      this.snooring_sound.volume = 0;
-      this.walking_sound.volume = 0;
-
-      this.walking_sound.play();
-      this.snooring_sound.play();
-      this.walking_sound.pause();
-      this.snooring_sound.pause();
-      // console.log(error);
     }
   }
 
   longIdle() {
     this.playAnimation(this.IMAGES_LONG_IDLE);
-    this.snooring_sound.play();
+    this.snooringPause =  this.snooring_sound.play();
     this.snooring_sound.volume = 0.01;
-
-    try {
+    if(this.walkingPause != undefined) {
       this.walking_sound.pause();
-    } catch (error) {
-      this.walking_sound.volume = 0;
-      this.walking_sound.play();
-      this.walking_sound.pause();
-
-      // console.log(error);
     }
   }
 
@@ -255,17 +244,11 @@ class Character extends MovableObjects {
     }, 500);
     this.lose_sound.volume = 0.05;
     this.lose_sound.play();
-    try {
+    if(this.walkingPause != undefined) {
       this.walking_sound.pause();
+    }
+    if(this.snooringPause != undefined) {
       this.snooring_sound.pause();
-    } catch (error) {
-      this.walking_sound.volume = 0;
-      this.snooring_sound.volume = 0;
-      this.walking_sound.play();
-      this.snooring_sound.play();
-      this.walking_sound.pause();
-      this.snooring_sound.pause();
-      // console.log(error);
     }
     setTimeout(() => {
       gameOver();
@@ -279,14 +262,7 @@ class Character extends MovableObjects {
    */
   jumping() {
     this.playAnimation(this.IMAGES_JUMPING);
-    try {
-      this.walking_sound.pause();
-    } catch (error) {
-      this.walking_sound.volume = 0();
-      this.walking_sound.play();
-      this.walking_sound.pause();
-      // console.log(error);
-    }
+    if(this.walkingPause != undefined) this.walking_sound.pause();
   }
 
   /**
