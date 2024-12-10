@@ -244,13 +244,13 @@ class Character extends MovableObjects {
     this.hurt_sound.play();
   }
 
-/**
- * Handles the character's death sequence.
- *
- * This function initiates the character's hiding animation and pauses all
- * playing sounds. After a delay of 1500 milliseconds, it triggers the game
- * over sequence.
- */
+  /**
+   * Handles the character's death sequence.
+   *
+   * This function initiates the character's hiding animation and pauses all
+   * playing sounds. After a delay of 1500 milliseconds, it triggers the game
+   * over sequence.
+   */
   pepeDied() {
     this.hideAndSeek();
     this.pauseSounds();
@@ -258,16 +258,16 @@ class Character extends MovableObjects {
       gameOver();
     }, 1500);
   }
-  
+
   /**
    * Makes the character hide after a certain amount of time.
-   * 
+   *
    * The character moves downwards and to the right, and after a certain
    * amount of time, it clears all of its intervals.
-   * 
+   *
    * @param {number} time - The amount of time to wait before hiding in milliseconds.
    */
-  hideAndSeek(){
+  hideAndSeek() {
     setInterval(() => {
       this.playAnimation(this.IMAGES_DEAD);
       this.y += 10;
@@ -287,13 +287,13 @@ class Character extends MovableObjects {
    * If either of the two sounds are not playing, it sets their volume to 0 and plays and pauses them,
    * which is a workaround to prevent errors when calling pause() on a sound that is not playing.
    */
-  pauseSounds(){
+  pauseSounds() {
     this.lose_sound.volume = 0.05;
     this.lose_sound.play();
-    if(this.walkingPause != undefined) {
+    if (this.walkingPause != undefined) {
       this.walking_sound.pause();
     }
-    if(this.snooringPause != undefined) {
+    if (this.snooringPause != undefined) {
       this.snooring_sound.pause();
     }
   }

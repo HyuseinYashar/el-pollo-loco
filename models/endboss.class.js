@@ -61,11 +61,16 @@ class Endboss extends MovableObjects {
     left: 20,
     right: 20,
   };
+
+  moveleftInt;
+  playAniInt;
+  animateInt;
   a;
+
   /**
    * Initializes the Endboss object by loading images for various states and
    * starting its animations and movement.
-   * 
+   *
    * Loads the initial walking image and preloads images for walking, alert,
    * attack, hurt, and dead states. Begins the Endboss walking left and
    * animating.
@@ -78,18 +83,18 @@ class Endboss extends MovableObjects {
     this.loadImages(this.IMAGES_ATTACK);
     this.loadImages(this.IMAGES_HURT);
     this.loadImages(this.IMAGES_DEAD);
-    this.walkLeft(); //walking left
-    this.animate(); // animating the object
+    this.walkLeft();
+    this.animate(); 
   }
 
-/**
- * Initiates the movement of the Endboss to the left.
- *
- * If the Endboss is not dead, this function sets up an interval
- * to repeatedly call the moveLeft function every 200 milliseconds.
- * This interval is stored in the moveleftInt property for potential
- * later use (e.g., clearing the interval).
- */
+  /**
+   * Initiates the movement of the Endboss to the left.
+   *
+   * If the Endboss is not dead, this function sets up an interval
+   * to repeatedly call the moveLeft function every 200 milliseconds.
+   * This interval is stored in the moveleftInt property for potential
+   * later use (e.g., clearing the interval).
+   */
   walkLeft() {
     if (!this.isDead()) {
       this.moveleftInt = setInterval(() => {
@@ -119,7 +124,7 @@ class Endboss extends MovableObjects {
       } else if (this.isHurt()) {
         this.speed = 0;
         this.playHurt();
-      } else if(this.energy>=20 && this.energy<=80){
+      } else if (this.energy >= 20 && this.energy <= 80) {
         this.playAttack();
       } else {
         this.playAnimation(this.IMAGES_WALKING);
@@ -127,15 +132,15 @@ class Endboss extends MovableObjects {
     }, 200);
   }
 
-/**
- * Plays the attack animation and increases the speed of the Endboss.
- *
- * This method sets the Endboss's speed to 7 and plays the attack animation
- * along with the alert sound. After 3 seconds, the speed is reset to 1.
- */
-  playAttack(){
-    this.speed  = 7
-    this.playAnimation(this.IMAGES_ATTACK)
+  /**
+   * Plays the attack animation and increases the speed of the Endboss.
+   *
+   * This method sets the Endboss's speed to 7 and plays the attack animation
+   * along with the alert sound. After 3 seconds, the speed is reset to 1.
+   */
+  playAttack() {
+    this.speed = 7;
+    this.playAnimation(this.IMAGES_ATTACK);
     this.boss_alert.volume = 0.01;
     this.a = this.boss_alert.play();
   }
@@ -163,12 +168,6 @@ class Endboss extends MovableObjects {
   isDead() {
     return this.energy == 0;
   }
-
-  moveleftInt;
-
-  playAniInt;
-
-  animateInt;
 
   /**
    * Plays the Endboss's hurt animation and sets its speed to 1.

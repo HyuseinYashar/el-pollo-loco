@@ -6,9 +6,7 @@ class World {
   endbossBar = new EndbossBar();
   throwableObjects = [];
   bottle = new ThrowableObject();
-
   enemies = level1.enemies;
-
   level = level1;
   canvas;
   ctx;
@@ -49,7 +47,7 @@ class World {
       this.collectingBottles();
       this.checkForFallenBottle();
       this.checkGame();
-    }, 150);
+    }, 100);
   }
 
   /**
@@ -118,7 +116,6 @@ class World {
         this.character.y + 50,
         this.character.otherDirection
       );
-
       this.character.amountOfBottles -= 20;
       if (this.character.amountOfBottles < 0) {
         this.character.amountOfBottles = 0;
@@ -151,23 +148,25 @@ class World {
    */
   draw() {
     if (this.gameOver) return;
-
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
-
-    [
-        this.level.backgroundObjects, this.level.clouds, [this.character],
-        this.enemies, this.throwableObjects, this.level.coins,
-        this.level.bottles, [this.bottle]
-    ].forEach(objects => this.addObjectsToMap(objects));
-
+    [ this.level.backgroundObjects,
+      this.level.clouds,
+      [this.character],
+      this.enemies,
+      this.throwableObjects,
+      this.level.coins,
+      this.level.bottles,
+      [this.bottle],
+    ].forEach((objects) => this.addObjectsToMap(objects));
     this.ctx.translate(-this.camera_x, 0);
-    [this.statusbarHealth, this.statusbarBottle, this.statusbarCoin, this.endbossBar]
-        .forEach(bar => this.addToMap(bar));
-
+    [ this.statusbarHealth,
+      this.statusbarBottle,
+      this.statusbarCoin,
+      this.endbossBar,
+    ].forEach((bar) => this.addToMap(bar));
     requestAnimationFrame(() => this.draw());
-}
-
+  }
 
   /**
    * Iterates over an array of objects and calls the addToMap method for each one.
@@ -327,9 +326,12 @@ class World {
    * @returns {Boolean} True if the character is above ground and colliding with the enemy, false otherwise.
    */
   characterJumpToKill(enemy) {
-    return this.character.isColliding(enemy) && this.character.isAboveGround() && this.character.speedY < 0;
+    return (
+      this.character.isColliding(enemy) &&
+      this.character.isAboveGround() &&
+      this.character.speedY < 0
+    );
   }
-
 
   /**
    * Handles the collision between a throwable bottle and an enemy.

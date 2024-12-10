@@ -14,6 +14,13 @@ class MovableObjects extends DrawableObject {
   hurt_sound = new Audio("audio/hurt_sound.mp3");
   frag_sound = new Audio("audio/frag.mp3");
 
+  /**
+   * Clears all currently active intervals.
+   *
+   * This is a naive implementation that clears intervals 1 to 999.
+   * It is not guaranteed to work if there are more than 999 active intervals.
+   * However, it is unlikely that there are that many active intervals.
+   */
   clearAllInt() {
     for (let index = 0; index < 999; index++) {
       clearInterval(index);
@@ -178,16 +185,34 @@ class MovableObjects extends DrawableObject {
     this.lasthit = new Date().getTime();
   }
 
+  /**
+   * Checks if the character is dead.
+   *
+   * The character is dead if its energy reaches 0.
+   *
+   * @returns {boolean} True if the character is dead, false otherwise.
+   */
   isDead() {
     return this.energy == 0;
   }
 
+  /**
+   * Checks if the character is hurt.
+   *
+   * The character is hurt if the time since it was last hit is less than 300 milliseconds.
+   * @returns {boolean} True if the character is hurt, false otherwise.
+   */
   isHurt() {
     let timepassed = new Date().getTime() - this.lasthit;
     timepassed = timepassed / 1000;
     return timepassed < 0.3;
   }
 
+  /**
+   * Throws the object by setting its vertical speed and applying gravity.
+   * Every 30 milliseconds, the object's horizontal position is updated by 10 pixels
+   * in the direction the object is facing.
+   */
   trow() {
     this.speedY = 8;
     this.applyGravity();

@@ -91,14 +91,17 @@ function endGame() {
  */
 function mute() {
   const soundIcon = document.getElementById("soundid");
+  const startscreen = document.getElementById("startscreen");
   soundMuted = !soundMuted;
   localStorage.setItem("soundMuted", JSON.stringify(soundMuted));
   if (soundMuted) {
     soundIcon.src = "img/icons/soundoff.png";
     bg_music.pause();
   } else {
+    if (startscreen.style.display !== "flex") {
+      bg_music.play();
+    }
     bg_music.volume = 0.02;
-    bg_music.play();
     soundIcon.src = "img/icons/soundon.png";
   }
 }

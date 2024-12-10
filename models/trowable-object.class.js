@@ -1,11 +1,13 @@
 class ThrowableObject extends MovableObjects {
   IMAGE_BOTTLE = "img/6_salsa_bottle/salsa_bottle.png";
+
   IMAGES_ROTATING = [
     "img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png",
     "img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png",
     "img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png",
     "img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png",
   ];
+
   IMAGE_SPLASH = [
     "img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png",
     "img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png",
@@ -21,6 +23,7 @@ class ThrowableObject extends MovableObjects {
     left: 20,
     right: 20,
   };
+
   animateRotation;
   damaging;
   bottle_drop = new Audio("audio/bottle_drop.mp3");
@@ -91,7 +94,6 @@ class ThrowableObject extends MovableObjects {
     this.playAnimation(this.IMAGE_SPLASH);
     this.bottle_drop.volume = 0.01;
     this.bottle_drop.play();
-
     clearInterval(this.animateRotation);
     clearInterval(this.throwAnimation);
   }

@@ -49,9 +49,20 @@ class SmallChicken extends MovableObjects {
       }
     }, 120);
   }
+
+  /**
+   * Checks if the chicken is dead.
+   * 
+   * Returns true if the chicken is dead and false otherwise.
+   * 
+   * @returns {Boolean} True if the chicken is dead, false otherwise.
+   * 
+   * @author Johannes Konert
+   */
   isDead() {
     return this.dead;
   }
+  
 
     /**
    * Kill the chicken.
