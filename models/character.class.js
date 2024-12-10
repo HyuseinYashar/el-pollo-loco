@@ -351,8 +351,15 @@ class Character extends MovableObjects {
     this.collecting_soud.volume = 0.01;
     this.collecting_soud.play();
 
-    if (this.amountOfBottles > 100) {
+    if (this.amountOfBottles >= 100) {
       this.amountOfBottles = 100;
+    }
+  }
+
+  reduceBottle(){
+    this.amountOfBottles -= 20;
+    if (this.amountOfBottles < 0) {
+      this.amountOfBottles = 0;
     }
   }
 }

@@ -47,7 +47,7 @@ class World {
       this.collectingBottles();
       this.checkForFallenBottle();
       this.checkGame();
-    }, 100);
+    }, 200);
   }
 
   /**
@@ -116,10 +116,7 @@ class World {
         this.character.y + 50,
         this.character.otherDirection
       );
-      this.character.amountOfBottles -= 20;
-      if (this.character.amountOfBottles < 0) {
-        this.character.amountOfBottles = 0;
-      }
+      this.character.reduceBottle();
       this.statusbarBottle.setPercentage(this.character.amountOfBottles);
     }
   }
@@ -264,7 +261,7 @@ class World {
   collectingBottles() {
     this.level.bottles.forEach((bottle, i) => {
       if (this.character.isColliding(bottle)) {
-        if (this.character.amountOfBottles <= 100) {
+        if (this.character.amountOfBottles < 100) {
           this.character.collectBottle();
           this.level.bottles.splice(i, 1);
           this.statusbarBottle.setPercentage(this.character.amountOfBottles);
