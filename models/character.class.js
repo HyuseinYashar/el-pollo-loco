@@ -17,7 +17,7 @@ class Character extends MovableObjects {
   snooring_sound = new Audio("audio/snooring.mp3");
 
   walkingPause;
-  snooringPause; 
+  snooringPause;
 
   offset = {
     top: 100,
@@ -191,7 +191,6 @@ class Character extends MovableObjects {
         if (RIGHT || LEFT || SPACE) {
           this.lastMove = Date.now();
           this.walking_sound.volume = 0.01;
-          this.walkingPause =  this.walking_sound.play();
         }
       }
       this.world.camera_x = -this.x + 200;
@@ -208,30 +207,67 @@ class Character extends MovableObjects {
    */
   idle() {
     this.playAnimation(this.IMAGES_IDLE);
-    if(this.walkingPause != undefined) {
+    if (this.walkingPause != undefined) {
       this.walking_sound.pause();
     }
-    if(this.snooringPause != undefined) {
+    if (this.snooringPause != undefined) {
       this.snooring_sound.pause();
     }
   }
 
+  /**
+   * Animates the character's long idle state.
+   *
+   * This function sets the character's animation to the long idle animation.
+   * It also plays the snooring sound and attempts to pause the walking sound, if it is playing.
+   * If the walking sound is not playing, it sets its volume to 0 and plays and pauses it,
+   * which is a workaround to prevent errors when calling pause() on a sound that is not playing.
+   */
   longIdle() {
     this.playAnimation(this.IMAGES_LONG_IDLE);
-    this.snooringPause =  this.snooring_sound.play();
+    this.snooringPause = this.snooring_sound.play();
     this.snooring_sound.volume = 0.01;
-    if(this.walkingPause != undefined) {
+    if (this.walkingPause != undefined) {
       this.walking_sound.pause();
     }
   }
 
+  /**
+   * Animates the character's hurt state.
+   *
+   * This function sets the character's animation to the hurt animation and
+   * plays the hurt sound at a volume of 0.005.
+   */
   hurting() {
     this.playAnimation(this.IMAGES_HURT);
     this.hurt_sound.volume = 0.005;
     this.hurt_sound.play();
   }
 
+/**
+ * Handles the character's death sequence.
+ *
+ * This function initiates the character's hiding animation and pauses all
+ * playing sounds. After a delay of 1500 milliseconds, it triggers the game
+ * over sequence.
+ */
   pepeDied() {
+    this.hideAndSeek();
+    this.pauseSounds();
+    setTimeout(() => {
+      gameOver();
+    }, 1500);
+  }
+  
+  /**
+   * Makes the character hide after a certain amount of time.
+   * 
+   * The character moves downwards and to the right, and after a certain
+   * amount of time, it clears all of its intervals.
+   * 
+   * @param {number} time - The amount of time to wait before hiding in milliseconds.
+   */
+  hideAndSeek(){
     setInterval(() => {
       this.playAnimation(this.IMAGES_DEAD);
       this.y += 10;
@@ -242,6 +278,16 @@ class Character extends MovableObjects {
         }, 550);
       }
     }, 500);
+  }
+  /**
+   * Pauses all sounds when the character dies.
+   *
+   * This method is called when the character's health reaches 0.
+   * It plays the lose sound and pauses the walking and snooring sounds.
+   * If either of the two sounds are not playing, it sets their volume to 0 and plays and pauses them,
+   * which is a workaround to prevent errors when calling pause() on a sound that is not playing.
+   */
+  pauseSounds(){
     this.lose_sound.volume = 0.05;
     this.lose_sound.play();
     if(this.walkingPause != undefined) {
@@ -250,9 +296,6 @@ class Character extends MovableObjects {
     if(this.snooringPause != undefined) {
       this.snooring_sound.pause();
     }
-    setTimeout(() => {
-      gameOver();
-    }, 1500);
   }
 
   /**
@@ -262,7 +305,7 @@ class Character extends MovableObjects {
    */
   jumping() {
     this.playAnimation(this.IMAGES_JUMPING);
-    if(this.walkingPause != undefined) this.walking_sound.pause();
+    if (this.walkingPause != undefined) this.walking_sound.pause();
   }
 
   /**

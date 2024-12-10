@@ -161,18 +161,6 @@ class MovableObjects extends DrawableObject {
     );
   }
 
-  isCollidingFromTop(mo) {
-    return (
-      // Vertikale Bedingung: "this" befindet sich oberhalb von "mo"
-      (this.y + this.height - this.offset.bottom) >= (mo.y + mo.offset.top) && // Untere Kante von "this" ist mindestens auf Höhe der oberen Kante von "mo"
-      (this.y + this.height - this.offset.bottom) <= (mo.y + mo.offset.top) + (mo.height / 10) && // Und nicht weit darunter (z. B. max. 10% der Höhe von "mo")
-  
-      // Horizontale Überlappung: Kanten überlappen sich
-      (this.x + this.width - this.offset.right) > (mo.x + mo.offset.left) && // Rechte Kante von "this" ist rechts der linken Kante von "mo"
-      (this.x + this.offset.left) < (mo.x + mo.width) - (mo.offset.right) // Linke Kante von "this" ist links der rechten Kante von "mo"
-    );
-  }
-
   /**
    * Handles the character taking damage from an enemy.
    *
@@ -183,15 +171,7 @@ class MovableObjects extends DrawableObject {
    * @param {MovableObject} enemy - The enemy that the character is colliding with.
    */
   hit(enemy) {
-    if (enemy instanceof Chicken) {
-      this.energy -= 10;
-    }
-    if (enemy instanceof SmallChicken) {
-      this.energy -= 5;
-    }
-    if (enemy instanceof Endboss) {
-      this.energy -= 15;
-    }
+    this.energy -= 2;
     if (this.energy < 0) {
       this.energy = 0;
     }

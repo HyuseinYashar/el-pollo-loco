@@ -16,6 +16,13 @@ class Cloud extends MovableObjects {
     }
     
 
+    /**
+     * Animates the cloud.
+     * 
+     * This method is called automatically by the constructor and starts the cloud's
+     * animation by calling the `moveLeft` method. The animation is done by moving the
+     * cloud to the left.
+     */
     animate(){
         this.moveLeft();
     }

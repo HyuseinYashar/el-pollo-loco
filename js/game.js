@@ -13,6 +13,12 @@ function init() {
   keyboard.mobileControl();
   canvas = document.getElementById("canvas");
   world = new World(canvas, keyboard);
+  bg_music.loop = true;
+  bg_music.volume = 0.05;
+
+  if(!soundMuted){
+    bg_music.play();
+  }
 }
 
 document.addEventListener("keydown", (e) => {
@@ -73,7 +79,7 @@ Audio.prototype.play = function () {
  */
 function endGame() {
   world.gameOver = true;
-  if(bgMusicPause != undefined)     bg_music.pause();
+  if(bgMusicPause != undefined)         bg_music.pause();
   clearAllIntervals();
   // startGame();
 }
@@ -89,7 +95,10 @@ function mute() {
   localStorage.setItem("soundMuted", JSON.stringify(soundMuted));
   if (soundMuted) {
     soundIcon.src = "img/icons/soundoff.png";
+    bg_music.pause();
   } else {
+    bg_music.volume = 0.02;
+    bg_music.play();
     soundIcon.src = "img/icons/soundon.png";
   }
 }
