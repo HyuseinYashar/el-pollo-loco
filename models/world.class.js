@@ -47,7 +47,7 @@ class World {
       this.collectingBottles();
       this.checkForFallenBottle();
       this.checkGame();
-    }, 200);
+    }, 50);
   }
 
   /**

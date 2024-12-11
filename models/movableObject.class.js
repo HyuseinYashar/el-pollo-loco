@@ -178,7 +178,7 @@ class MovableObjects extends DrawableObject {
    * @param {MovableObject} enemy - The enemy that the character is colliding with.
    */
   hit(enemy) {
-    this.energy -= 2;
+    this.energy -= 1;
     if (this.energy < 0) {
       this.energy = 0;
     }
