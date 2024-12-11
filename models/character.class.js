@@ -358,6 +358,7 @@ class Character extends MovableObjects {
 
   reduceBottle(){
     this.amountOfBottles -= 20;
+    this.lastMove = new Date().getTime();
     if (this.amountOfBottles < 0) {
       this.amountOfBottles = 0;
     }

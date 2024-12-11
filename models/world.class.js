@@ -6,6 +6,7 @@ class World {
   endbossBar = new EndbossBar();
   throwableObjects = [];
   bottle = new ThrowableObject();
+  hasThrown = new Date().getTime();
   enemies = level1.enemies;
   level = level1;
   canvas;
@@ -26,6 +27,7 @@ class World {
     this.draw();
     this.setWorld();
     this.run();
+    this.run2();
   }
 
   /**
@@ -42,12 +44,24 @@ class World {
   run() {
     setInterval(() => {
       this.checkCollisions();
-      this.checkThrowObjects();
-      this.collectingCoins();
       this.collectingBottles();
+      this.collectingCoins();
+    }, 100);
+  }
+
+  /**
+   * Runs a periodic check for game events related to throwable objects and game state.
+   *
+   * This function periodically checks if any throwable objects have been thrown
+   * and if any bottles have fallen. It also checks the current game state to determine
+   * if the game has ended. The checks occur every 300 milliseconds.
+   */
+  run2() {
+    setInterval(() => {
+      this.checkThrowObjects();
       this.checkForFallenBottle();
       this.checkGame();
-    }, 50);
+    }, 300);
   }
 
   /**
@@ -97,7 +111,7 @@ class World {
     this.bottle.splash();
     setTimeout(() => {
       this.bottle = new ThrowableObject();
-    }, 700);
+    }, 50);
   }
 
   /**
@@ -147,7 +161,8 @@ class World {
     if (this.gameOver) return;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.translate(this.camera_x, 0);
-    [ this.level.backgroundObjects,
+    [
+      this.level.backgroundObjects,
       this.level.clouds,
       [this.character],
       this.enemies,
@@ -157,7 +172,8 @@ class World {
       [this.bottle],
     ].forEach((objects) => this.addObjectsToMap(objects));
     this.ctx.translate(-this.camera_x, 0);
-    [ this.statusbarHealth,
+    [
+      this.statusbarHealth,
       this.statusbarBottle,
       this.statusbarCoin,
       this.endbossBar,
