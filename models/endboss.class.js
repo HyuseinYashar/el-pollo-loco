@@ -85,6 +85,7 @@ class Endboss extends MovableObjects {
     this.loadImages(this.IMAGES_DEAD);
     this.walkLeft();
     this.animate(); 
+    this.move();
   }
 
   /**
@@ -143,6 +144,24 @@ class Endboss extends MovableObjects {
     this.playAnimation(this.IMAGES_ATTACK);
     this.boss_alert.volume = 0.01;
     this.a = this.boss_alert.play();
+   
+  }
+
+  move() {
+    setInterval(() => {
+      if (this.x < 800) {
+        this.otherDirection = true;
+      }
+      if (!this.otherDirection) {
+        this.moveLeft();
+      } else {
+        this.moveRight();
+        this.otherDirection = true;
+      }
+      if (this.x > 1800) {
+        this.otherDirection = false;
+      }
+    }, 1000/30);
   }
 
   /**

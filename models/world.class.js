@@ -349,7 +349,7 @@ class World {
         if (!(enemy instanceof Endboss)) {
           this.level.enemies = this.level.enemies.filter((e) => e !== enemy);
         }
-      }, 300);
+      }, 250);
     } else if (enemy instanceof Endboss) {
       if (this.bottle.damaging) enemy.hit();
       this.endbossBar.setPercentage(enemy.energy);
